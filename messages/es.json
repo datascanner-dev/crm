@@ -874,17 +874,17 @@
       "pickColor": "Elegir el color {color}"
     },
     "analytics": {
-      "totalDeals": "Total de negocios",
+      "totalDeals": "Total de\nnegocios",
       "totalDealsTooltip": "Cantidad de negocios de este pipeline que no están marcados como perdidos. Los negocios ganados siguen incluidos.",
-      "pipelineValue": "Valor del pipeline",
+      "pipelineValue": "Valor del\npipeline",
       "pipelineValueTooltip": "Suma de los valores de todos los negocios de este pipeline, excluyendo los marcados como perdidos.",
-      "avgDealSize": "Ticket promedio",
+      "avgDealSize": "Ticket\npromedio",
       "avgDealSizeTooltip": "Valor del pipeline dividido por el total de negocios: el valor promedio de un solo negocio no perdido.",
-      "weightedValue": "Valor ponderado",
+      "weightedValue": "Valor\nponderado",
       "weightedValueTooltip": "Ingresos esperados: el valor de cada negocio abierto × la probabilidad de su etapa. Primera etapa ≈ 10%, las etapas avanzan hasta 90%, Ganado = 100%. Los negocios perdidos se excluyen.",
-      "wonThisMonth": "Ganados este mes",
+      "wonThisMonth": "Ganados\neste mes",
       "wonThisMonthTooltip": "Negocios marcados como ganados desde el primer día del mes actual.",
-      "lostThisMonth": "Perdidos este mes",
+      "lostThisMonth": "Perdidos\neste mes",
       "lostThisMonthTooltip": "Negocios marcados como perdidos desde el primer día del mes actual.",
       "howCalculated": "Cómo se calcula {label}"
     }

@@ -874,17 +874,17 @@
       "pickColor": "Pick color {color}"
     },
     "analytics": {
-      "totalDeals": "Total Deals",
+      "totalDeals": "Total\nDeals",
       "totalDealsTooltip": "Count of every deal in this pipeline that isn't marked as Lost. Won deals are still included.",
-      "pipelineValue": "Pipeline Value",
+      "pipelineValue": "Pipeline\nValue",
       "pipelineValueTooltip": "Sum of the dollar values of all deals in this pipeline, excluding deals marked as Lost.",
-      "avgDealSize": "Avg Deal Size",
+      "avgDealSize": "Avg Deal\nSize",
       "avgDealSizeTooltip": "Pipeline Value divided by Total Deals — the average value of a single non-lost deal.",
-      "weightedValue": "Weighted Value",
+      "weightedValue": "Weighted\nValue",
       "weightedValueTooltip": "Expected revenue: each open deal's value × its stage probability. First stage ≈ 10%, stages progress up to 90%, Won = 100%. Lost deals are excluded.",
-      "wonThisMonth": "Won This Month",
+      "wonThisMonth": "Won This\nMonth",
       "wonThisMonthTooltip": "Deals marked as Won since the first day of the current month.",
-      "lostThisMonth": "Lost This Month",
+      "lostThisMonth": "Lost This\nMonth",
       "lostThisMonthTooltip": "Deals marked as Lost since the first day of the current month.",
       "howCalculated": "How {label} is calculated"
     }
