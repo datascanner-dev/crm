@@ -205,7 +205,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
       <aside
         className={cn(
           // Mobile: fixed drawer that slides in from the left.
-          "fixed inset-y-0 left-0 z-40 flex h-full w-64 flex-col border-r border-border bg-card",
+          "fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] flex-col border-r border-border bg-card",
           "transition-transform duration-200 ease-out will-change-transform",
           open ? "translate-x-0" : "-translate-x-full",
           // Desktop: static, always visible — reset all the mobile framing.
@@ -268,7 +268,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                     aria-label={collapsed ? t(item.labelKey as string) : undefined}
                     className={cn(
                       // Taller on mobile so fingers can hit the row reliably (≥44px).
-                      "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      "relative flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors lg:py-2.5",
                       collapsed && "lg:justify-center lg:px-0",
                       isActive
                         ? "bg-accent text-foreground ring-1 ring-border [&_svg]:text-primary"
@@ -290,7 +290,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                         aria-label={t("unreadConversations", { count: totalUnread })}
                         className={cn("relative flex h-2 w-2", collapsed && "lg:absolute lg:top-2 lg:right-3")}
                       >
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75 motion-reduce:hidden" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                       </span>
                     )}
@@ -323,7 +323,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                     title={collapsed ? t(item.labelKey as string) : undefined}
                     aria-label={collapsed ? t(item.labelKey as string) : undefined}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors lg:py-2.5",
                       collapsed && "lg:justify-center lg:px-0",
                       isActive
                         ? "bg-accent text-foreground ring-1 ring-border [&_svg]:text-primary"
