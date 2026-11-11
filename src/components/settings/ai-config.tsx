@@ -296,7 +296,7 @@ export function AiConfig() {
                     openai_compatible: t('providerOpenAiCompatible'),
                   }}
                 >
-                  <SelectTrigger className="w-full sm:w-fit">
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -516,7 +516,7 @@ export function AiConfig() {
                   ...Object.fromEntries(members.map((m) => [m.user_id, memberLabel(m)])),
                 }}
               >
-                <SelectTrigger id="ai-handoff" className="w-full sm:w-fit">
+                <SelectTrigger id="ai-handoff" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
