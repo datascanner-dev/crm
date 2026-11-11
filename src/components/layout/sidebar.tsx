@@ -194,7 +194,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
         aria-label={t("closeMenu")}
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-30 bg-background/70 backdrop-blur-sm transition-opacity lg:hidden",
+          "fixed inset-0 z-[38] bg-background/70 backdrop-blur-sm transition-opacity lg:hidden",
           open
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0",
@@ -204,11 +204,11 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
       <aside
         className={cn(
           // Mobile: fixed drawer that slides in from the left.
-          "fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] flex-col border-r border-border bg-card",
+          "fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] flex-col rounded-r-[12px] border-r border-border bg-card",
           "transition-transform duration-200 ease-out will-change-transform",
           open ? "translate-x-0" : "-translate-x-full",
           // Desktop: static, always visible — reset all the mobile framing.
-          "lg:static lg:z-0 lg:translate-x-0 lg:overflow-hidden",
+          "lg:static lg:z-0 lg:translate-x-0 lg:overflow-hidden lg:rounded-none",
           collapsed ? "lg:w-16" : "lg:w-60",
           animate
             ? "lg:transition-[width] lg:duration-200 lg:ease-out"
