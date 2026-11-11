@@ -2,7 +2,11 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import {
+  canAddNotes,
   canDeleteAccount,
+  canDeleteRecords,
+  canManageBroadcasts,
+  canReassign,
   canEditSettings,
   canManageMembers,
   canSendMessages,
@@ -22,7 +26,11 @@ export type CanAction =
   | "send-messages"
   | "view-only"
   | "delete-account"
-  | "transfer-ownership";
+  | "transfer-ownership"
+  | "reassign"
+  | "delete-records"
+  | "manage-broadcasts"
+  | "add-notes";
 
 /**
  * Inline alternative to `<RequireRole>` for places that need a
@@ -54,6 +62,14 @@ export function useCan(action: CanAction): boolean {
       return canDeleteAccount(accountRole);
     case "transfer-ownership":
       return canTransferOwnership(accountRole);
+    case "reassign":
+      return canReassign(accountRole);
+    case "delete-records":
+      return canDeleteRecords(accountRole);
+    case "manage-broadcasts":
+      return canManageBroadcasts(accountRole);
+    case "add-notes":
+      return canAddNotes(accountRole);
     default: {
       // Exhaustiveness check — adding a new `CanAction` without a
       // case here fails the typecheck because TS narrows `action`
