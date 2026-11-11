@@ -22,6 +22,7 @@
 // this page after email verification.
 // ============================================================
 
+import { PUBLIC_SIGNUP_OPEN } from '@/lib/auth/signup-open';
 import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -253,22 +254,27 @@ export default function JoinPage() {
               >
                 {t('tryAgain')}
               </Button>
-              <Link href="/signup">
-                <Button
-                  variant="outline"
-                  className="w-full border-border text-muted-foreground hover:bg-muted hover:text-foreground"
-                >
-                  {t('createNewAccount')}
-                </Button>
-              </Link>
+              {/* Cadastro público fechado: sem convite válido, só entrar. */}
+              {PUBLIC_SIGNUP_OPEN && (
+                <Link href="/signup">
+                  <Button
+                    variant="outline"
+                    className="w-full border-border text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    {t('createNewAccount')}
+                  </Button>
+                </Link>
+              )}
             </>
           ) : (
             <>
-              <Link href="/signup">
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  {t('createNewAccount')}
-                </Button>
-              </Link>
+              {PUBLIC_SIGNUP_OPEN && (
+                <Link href="/signup">
+                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                    {t('createNewAccount')}
+                  </Button>
+                </Link>
+              )}
               <Link href="/login">
                 <Button
                   variant="outline"
