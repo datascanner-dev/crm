@@ -14,6 +14,7 @@
  */
 
 export const THEME_IDS = [
+  "datascanner",
   "violet",
   "emerald",
   "cobalt",
@@ -23,9 +24,11 @@ export const THEME_IDS = [
 
 export type ThemeId = (typeof THEME_IDS)[number];
 
-export const DEFAULT_THEME: ThemeId = "violet";
+export const DEFAULT_THEME: ThemeId = "datascanner";
 
-export const STORAGE_KEY = "wacrm.theme";
+// Chave nova para que todos comecem no tema Data Scanner após a
+// reformulação visual; a escolha de modo (claro/escuro) é preservada.
+export const STORAGE_KEY = "dscrm.theme";
 
 /**
  * MODE — the light/dark dimension, orthogonal to the accent theme.
@@ -68,33 +71,39 @@ export interface ThemeMeta {
 
 export const THEMES: ReadonlyArray<ThemeMeta> = [
   {
+    id: "datascanner",
+    name: "Data Scanner",
+    tagline: "Padrão: o laranja da marca Data Scanner.",
+    swatch: "oklch(0.661 0.229 35.5)",
+  },
+  {
     id: "violet",
-    name: "Violet",
-    tagline: "The default — confident, slightly playful.",
+    name: "Violeta",
+    tagline: "Confiante, com um toque divertido.",
     swatch: "oklch(0.526 0.247 293)",
   },
   {
     id: "emerald",
-    name: "Emerald",
-    tagline: "Growth-coded, nods at messaging without copying WhatsApp green.",
+    name: "Esmeralda",
+    tagline: "Remete a crescimento e mensagens, sem copiar o verde do WhatsApp.",
     swatch: "oklch(0.62 0.16 162)",
   },
   {
     id: "cobalt",
-    name: "Cobalt",
-    tagline: "Clean B2B-SaaS blue — calm and product-y.",
+    name: "Cobalto",
+    tagline: "Azul limpo de SaaS B2B, calmo e profissional.",
     swatch: "oklch(0.585 0.2 254)",
   },
   {
     id: "amber",
-    name: "Amber",
-    tagline: "Warm and friendly — feels good for SMB teams.",
+    name: "Âmbar",
+    tagline: "Quente e acolhedor, combina com pequenas empresas.",
     swatch: "oklch(0.745 0.16 65)",
   },
   {
     id: "rose",
-    name: "Rose",
-    tagline: "Bold and modern — D2C, creator-economy, lifestyle.",
+    name: "Rosa",
+    tagline: "Ousado e moderno, para D2C e lifestyle.",
     swatch: "oklch(0.645 0.22 16)",
   },
 ];
