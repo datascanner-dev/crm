@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AuthShell } from "@/components/brand/auth-shell";
 import { PasswordInput } from "@/components/brand/password-input";
+import { registerLogin } from "@/lib/pwa/install-invite";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,6 +76,8 @@ function LoginPageInner() {
     const destination = inviteToken
       ? `/join/${encodeURIComponent(inviteToken)}`
       : "/dashboard";
+    // Conta um login para o convite de instalação do PWA (lembretes após cancelar).
+    registerLogin();
     window.location.href = destination;
   };
 
