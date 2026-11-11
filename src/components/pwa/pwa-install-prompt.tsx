@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Share, SquarePlus, X } from "lucide-react";
+import { EllipsisVertical, Share, SquarePlus, X } from "lucide-react";
 import { BrandMark } from "@/components/brand/brand-mark";
 import { Button } from "@/components/ui/button";
 import {
   onAccept,
   onDismiss,
   readState,
+  resetState,
   shouldShow,
   writeState,
 } from "@/lib/pwa/install-invite";
@@ -29,6 +30,10 @@ function inviteAllowed() {
 //   "Install".
 // - iOS / iPadOS Safari: there is no install API, so the invite shows
 //   the two Share → "Add to Home Screen" steps instead.
+// - Android browsers that never fire `beforeinstallprompt` (Samsung
+//   Internet, in-app browsers, Chrome after its own cooldown): after a
+//   short wait the invite shows the browser-menu steps instead.
+// - `?instalar` in the URL resets the invite state (shows it again).
 // - Already installed (standalone): nothing is shown.
 // - Cancel / accept rules (next 3 logins after a cancel, never after
 //   accepting) live in @/lib/pwa/install-invite.
@@ -52,11 +57,26 @@ function isIos() {
   return /iPhone|iPad|iPod/.test(ua) || iPadOs;
 }
 
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
+// Link "?instalar": zera o convite e limpa o parâmetro da URL.
+function consumeResetParam() {
+  try {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("instalar")) return;
+    resetState(localStorage);
+    url.searchParams.delete("instalar");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+  } catch {}
+}
+
 
 export function PwaInstallPrompt() {
   const t = useTranslations("PwaInstall");
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
-  const [mode, setMode] = useState<"hidden" | "native" | "ios">("hidden");
+  const [mode, setMode] = useState<"hidden" | "native" | "ios" | "android">("hidden");
 
   useEffect(() => {
     if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
@@ -65,6 +85,7 @@ export function PwaInstallPrompt() {
         .catch(() => {});
     }
 
+    consumeResetParam();
     if (isStandalone() || !inviteAllowed()) return;
 
     const onPrompt = (e: Event) => {
@@ -82,16 +103,22 @@ export function PwaInstallPrompt() {
     window.addEventListener("beforeinstallprompt", onPrompt);
     window.addEventListener("appinstalled", onInstalled);
 
-    let iosTimer: number | undefined;
+    let timer: number | undefined;
     if (isIos()) {
       // Short delay so the invite doesn't flash over the first paint.
-      iosTimer = window.setTimeout(() => setMode("ios"), 800);
+      timer = window.setTimeout(() => setMode("ios"), 800);
+    } else if (isAndroid()) {
+      // No native prompt after a few seconds: show the browser-menu steps.
+      timer = window.setTimeout(
+        () => setMode((m) => (m === "hidden" ? "android" : m)),
+        3000,
+      );
     }
 
     return () => {
       window.removeEventListener("beforeinstallprompt", onPrompt);
       window.removeEventListener("appinstalled", onInstalled);
-      if (iosTimer) window.clearTimeout(iosTimer);
+      if (timer) window.clearTimeout(timer);
     };
   }, []);
 
@@ -141,7 +168,7 @@ export function PwaInstallPrompt() {
             {t("title")}
           </h2>
           <p id="pwa-install-desc" className="mt-1 text-sm text-muted-foreground">
-            {mode === "ios" ? t("iosIntro") : t("desc")}
+            {mode === "ios" ? t("iosIntro") : mode === "android" ? t("androidIntro") : t("desc")}
           </p>
         </div>
         <button
@@ -154,16 +181,28 @@ export function PwaInstallPrompt() {
         </button>
       </div>
 
-      {mode === "ios" ? (
+      {mode === "ios" || mode === "android" ? (
         <>
           <ol className="mt-3 flex flex-col gap-2 text-sm text-foreground">
             <li className="flex items-center gap-3 rounded-xl bg-muted px-3 py-2.5">
-              <Share className="size-5 shrink-0 text-primary" aria-hidden="true" />
-              <span>{t.rich("iosStep1", { strong: (c) => <strong>{c}</strong> })}</span>
+              {mode === "ios" ? (
+                <Share className="size-5 shrink-0 text-primary" aria-hidden="true" />
+              ) : (
+                <EllipsisVertical className="size-5 shrink-0 text-primary" aria-hidden="true" />
+              )}
+              <span>
+                {t.rich(mode === "ios" ? "iosStep1" : "androidStep1", {
+                  strong: (c) => <strong>{c}</strong>,
+                })}
+              </span>
             </li>
             <li className="flex items-center gap-3 rounded-xl bg-muted px-3 py-2.5">
               <SquarePlus className="size-5 shrink-0 text-primary" aria-hidden="true" />
-              <span>{t.rich("iosStep2", { strong: (c) => <strong>{c}</strong> })}</span>
+              <span>
+                {t.rich(mode === "ios" ? "iosStep2" : "androidStep2", {
+                  strong: (c) => <strong>{c}</strong>,
+                })}
+              </span>
             </li>
           </ol>
           <Button
