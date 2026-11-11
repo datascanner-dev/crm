@@ -229,7 +229,6 @@ export function TagManager() {
               </div>
               <Button
                 variant="outline"
-                size="sm"
                 onClick={handleCreate}
                 disabled={saving || !newTagName.trim()}
               >

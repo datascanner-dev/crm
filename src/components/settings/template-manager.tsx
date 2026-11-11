@@ -861,7 +861,6 @@ export function TemplateManager() {
                       <Button
                         type="button"
                         variant="outline"
-                        size="sm"
                         disabled={uploadingHeader}
                         onClick={() => headerFileRef.current?.click()}
                       >
@@ -968,10 +967,9 @@ export function TemplateManager() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
                   onClick={addButton}
                   disabled={form.buttons.length >= TEMPLATE_LIMITS.maxButtonsTotal}
-                  className="border-border bg-transparent text-muted-foreground hover:bg-muted h-7 text-xs"
+                  className="border-border bg-transparent text-muted-foreground hover:bg-muted"
                 >
                   <Plus className="size-3" />
                   {t('addButton')}
@@ -1036,7 +1034,7 @@ export function TemplateManager() {
                           onChange={(e) =>
                             updateButton(i, { text: e.target.value })
                           }
-                          className="flex-1 bg-muted border-border text-foreground placeholder:text-muted-foreground h-8 text-xs"
+                          className="flex-1 bg-muted border-border text-foreground placeholder:text-muted-foreground"
                         />
                         <Button
                           type="button"
@@ -1058,7 +1056,7 @@ export function TemplateManager() {
                             onChange={(e) =>
                               updateButton(i, { url: e.target.value })
                             }
-                            className="bg-muted border-border text-foreground placeholder:text-muted-foreground h-8 text-xs"
+                            className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                           />
                           {extractVariableIndices(btn.url).length > 0 && (
                             <Input
@@ -1067,7 +1065,7 @@ export function TemplateManager() {
                               onChange={(e) =>
                                 updateButton(i, { example: e.target.value })
                               }
-                              className="bg-muted border-border text-foreground placeholder:text-muted-foreground h-8 text-xs"
+                              className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                             />
                           )}
                         </div>
@@ -1079,7 +1077,7 @@ export function TemplateManager() {
                           onChange={(e) =>
                             updateButton(i, { phone_number: e.target.value })
                           }
-                          className="bg-muted border-border text-foreground placeholder:text-muted-foreground h-8 text-xs"
+                          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                         />
                       )}
                       {btn.type === 'COPY_CODE' && (
@@ -1089,7 +1087,7 @@ export function TemplateManager() {
                           onChange={(e) =>
                             updateButton(i, { example: e.target.value })
                           }
-                          className="bg-muted border-border text-foreground placeholder:text-muted-foreground h-8 text-xs"
+                          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                         />
                       )}
                     </div>
