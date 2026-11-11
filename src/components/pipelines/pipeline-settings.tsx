@@ -434,6 +434,8 @@ function SortableStageRow({
       <Button
         variant="ghost"
         size="icon-xs"
+        aria-label="Remover etapa"
+        title="Remover etapa"
         onClick={onRemove}
         className="text-muted-foreground hover:text-red-400"
       >
