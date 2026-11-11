@@ -44,7 +44,8 @@
     "menuSettings": "Configurações",
     "menuSignOut": "Sair",
     "collapseMenu": "Recolher menu",
-    "expandMenu": "Expandir menu"
+    "expandMenu": "Expandir menu",
+    "newAssignedDeals": "{count} {count, plural, =1 {negócio novo atribuído a você} other {negócios novos atribuídos a você}}"
   },
   "Header": {
     "dashboard": "Painel",
@@ -63,7 +64,11 @@
     "menuSettings": "Configurações",
     "menuSignOut": "Sair",
     "flows": "Fluxos",
-    "aiAgents": "Agentes de IA"
+    "aiAgents": "Agentes de IA",
+    "bellLabel": "Avisos ({count})",
+    "bellNewDeals": "Negócios novos para você",
+    "bellNotifications": "Notificações",
+    "bellEmpty": "Nada novo por aqui"
   },
   "ModeToggle": {
     "switchMode": "Mudar para o modo {mode}"
@@ -793,7 +798,8 @@
     "card": {
       "noContact": "Sem contato",
       "won": "Ganho",
-      "lost": "Perdido"
+      "lost": "Perdido",
+      "new": "Novo"
     },
     "form": {
       "editDeal": "Editar negócio",

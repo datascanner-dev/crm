@@ -44,7 +44,8 @@
     "menuSettings": "설정",
     "menuSignOut": "로그아웃",
     "collapseMenu": "메뉴 접기",
-    "expandMenu": "메뉴 펼치기"
+    "expandMenu": "메뉴 펼치기",
+    "newAssignedDeals": "나에게 배정된 새 거래 {count}건"
   },
   "Header": {
     "dashboard": "대시보드",
@@ -63,7 +64,11 @@
     "menuSettings": "설정",
     "menuSignOut": "로그아웃",
     "flows": "플로우",
-    "aiAgents": "AI 에이전트"
+    "aiAgents": "AI 에이전트",
+    "bellLabel": "알림 ({count})",
+    "bellNewDeals": "나에게 온 새 거래",
+    "bellNotifications": "알림",
+    "bellEmpty": "새로운 항목이 없습니다"
   },
   "ModeToggle": {
     "switchMode": "{mode} 모드로 전환"
@@ -793,7 +798,8 @@
     "card": {
       "noContact": "연락처 없음",
       "won": "성사",
-      "lost": "실패"
+      "lost": "실패",
+      "new": "신규"
     },
     "form": {
       "editDeal": "딜 수정",
