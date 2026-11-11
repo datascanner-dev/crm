@@ -839,7 +839,8 @@
       "toastDeleted": "Negocio eliminado",
       "leadData": "Datos del lead",
       "leadDataHint": "Campos personalizados del contacto. Los cambios se guardan junto con el negocio.",
-      "toastCustomFieldsFailed": "Negocio guardado, pero no se pudieron actualizar los datos del lead"
+      "toastCustomFieldsFailed": "Negocio guardado, pero no se pudieron actualizar los datos del lead",
+      "reassignAdminOnly": "Solo el propietario y los administradores pueden reasignar este negocio."
     },
     "settings": {
       "managePipeline": "Administrar pipeline",
@@ -980,7 +981,10 @@
       "toastDraftSaved": "Borrador guardado",
       "broadcastFailed": "Falló la difusión",
       "toastSendTakenOver": "Otro envío tomó el control de esta difusión, así que esta pestaña dejó de enviar. Abre la difusión para seguir su progreso.",
-      "toastSendInterrupted": "El envío se detuvo porque se perdió la conexión con el servidor. Abre la difusión y usa Reanudar envío para enviar a los destinatarios restantes. El botón aparece en un máximo de 5 minutos."
+      "toastSendInterrupted": "El envío se detuvo porque se perdió la conexión con el servidor. Abre la difusión y usa Reanudar envío para enviar a los destinatarios restantes. El botón aparece en un máximo de 5 minutos.",
+      "adminOnlyTitle": "Los envíos masivos están restringidos",
+      "adminOnlyDesc": "Solo el propietario y los administradores pueden crear y enviar envíos masivos.",
+      "adminOnlyBack": "Volver a envíos masivos"
     },
     "wizard": {
       "next": "Siguiente",

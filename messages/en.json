@@ -839,7 +839,8 @@
       "toastDeleted": "Deal deleted",
       "leadData": "Lead data",
       "leadDataHint": "Contact custom fields. Changes are saved with the deal.",
-      "toastCustomFieldsFailed": "Deal saved, but the lead data could not be updated"
+      "toastCustomFieldsFailed": "Deal saved, but the lead data could not be updated",
+      "reassignAdminOnly": "Only the owner and admins can reassign this deal."
     },
     "settings": {
       "managePipeline": "Manage Pipeline",
@@ -980,7 +981,10 @@
       "toastDraftSaved": "Draft saved",
       "broadcastFailed": "Broadcast failed",
       "toastSendTakenOver": "Another delivery took over this broadcast, so this tab stopped sending. Open the broadcast to follow its progress.",
-      "toastSendInterrupted": "Sending stopped because the connection to the server dropped. Open the broadcast and select Resume sending to reach the remaining recipients. The button appears within 5 minutes."
+      "toastSendInterrupted": "Sending stopped because the connection to the server dropped. Open the broadcast and select Resume sending to reach the remaining recipients. The button appears within 5 minutes.",
+      "adminOnlyTitle": "Broadcasts are restricted",
+      "adminOnlyDesc": "Only the owner and admins can create and send broadcasts.",
+      "adminOnlyBack": "Back to Broadcasts"
     },
     "wizard": {
       "next": "Next",

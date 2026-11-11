@@ -839,7 +839,8 @@
       "toastDeleted": "Negócio excluído",
       "leadData": "Dados do lead",
       "leadDataHint": "Campos personalizados do contato. As alterações são salvas junto com o negócio.",
-      "toastCustomFieldsFailed": "Negócio salvo, mas os dados do lead não foram atualizados"
+      "toastCustomFieldsFailed": "Negócio salvo, mas os dados do lead não foram atualizados",
+      "reassignAdminOnly": "Somente o Proprietário e os Administradores podem reatribuir este negócio."
     },
     "settings": {
       "managePipeline": "Gerenciar funil",
@@ -980,7 +981,10 @@
       "toastDraftSaved": "Rascunho salvo",
       "broadcastFailed": "Falha no disparo",
       "toastSendTakenOver": "Outro envio assumiu esta transmissão, então esta aba parou de enviar. Abra a transmissão para acompanhar o progresso.",
-      "toastSendInterrupted": "O envio parou porque a conexão com o servidor caiu. Abra a transmissão e use Retomar envio para enviar aos destinatários restantes. O botão aparece em até 5 minutos."
+      "toastSendInterrupted": "O envio parou porque a conexão com o servidor caiu. Abra a transmissão e use Retomar envio para enviar aos destinatários restantes. O botão aparece em até 5 minutos.",
+      "adminOnlyTitle": "Disparos são restritos",
+      "adminOnlyDesc": "Somente o Proprietário e os Administradores podem criar e enviar disparos.",
+      "adminOnlyBack": "Voltar para Disparos"
     },
     "wizard": {
       "next": "Avançar",
