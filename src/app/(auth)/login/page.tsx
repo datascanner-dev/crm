@@ -1,5 +1,6 @@
 "use client";
 
+import { authErrorMessage } from "@/lib/auth-error-message";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -65,7 +66,7 @@ function LoginPageInner() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(authErrorMessage(error));
       setLoading(false);
       return;
     }
@@ -157,7 +158,7 @@ function LoginPageInner() {
             <Button
               type="submit"
               disabled={loading}
-              className="mt-2 h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="mt-2 h-12 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
               {loading ? t('signingIn') : t('signIn')}
             </Button>
