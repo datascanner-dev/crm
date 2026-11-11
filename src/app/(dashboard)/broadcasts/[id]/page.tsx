@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { fetchAllPages } from '@/lib/supabase/paged-query';
 import { Broadcast, BroadcastRecipient, RecipientStatus } from '@/types';
 import { Button } from '@/components/ui/button';
+import { useCan } from '@/hooks/use-can';
 import {
   Table,
   TableBody,
@@ -149,6 +150,8 @@ function downloadBlob(filename: string, content: string) {
 }
 
 export default function BroadcastDetailPage() {
+  // Excluir e retomar disparos: só Proprietário/Administrador (migration 060).
+  const canManage = useCan('manage-broadcasts');
   const params = useParams();
   const router = useRouter();
   const t = useTranslations('Broadcasts.detail');
@@ -403,7 +406,7 @@ export default function BroadcastDetailPage() {
           <Button
             variant="outline"
             size="sm"
-            disabled={broadcast.status === 'sending'}
+            disabled={!canManage || broadcast.status === 'sending'}
             onClick={() => setConfirmDelete(true)}
             title={
               broadcast.status === 'sending'
@@ -437,7 +440,7 @@ export default function BroadcastDetailPage() {
               <Button
                 size="sm"
                 onClick={() => handleResume('pending')}
-                disabled={resumingScope !== null}
+                disabled={!canManage || resumingScope !== null}
               >
                 {resumingScope === 'pending' ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -452,7 +455,7 @@ export default function BroadcastDetailPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => handleResume('failed')}
-                disabled={resumingScope !== null}
+                disabled={!canManage || resumingScope !== null}
                 className="border-border text-muted-foreground hover:bg-muted"
               >
                 {resumingScope === 'failed' ? (
