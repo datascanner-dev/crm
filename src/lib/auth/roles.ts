@@ -107,3 +107,27 @@ export function canDeleteAccount(role: AccountRole): boolean {
 export function canTransferOwnership(role: AccountRole): boolean {
   return role === "owner";
 }
+
+/**
+ * Owner / admin: assign a deal to another member. Agents may only
+ * claim an unassigned deal for themselves (enforced by the
+ * `deals_guard_reassign` trigger, migration 060).
+ */
+export function canReassign(role: AccountRole): boolean {
+  return hasMinRole(role, "admin");
+}
+
+/** Owner / admin: delete contacts and deals (migration 060). */
+export function canDeleteRecords(role: AccountRole): boolean {
+  return hasMinRole(role, "admin");
+}
+
+/** Owner / admin: create, edit and send broadcasts (migration 060). */
+export function canManageBroadcasts(role: AccountRole): boolean {
+  return hasMinRole(role, "admin");
+}
+
+/** Every member, viewers included: add notes to a contact (migration 060). */
+export function canAddNotes(role: AccountRole): boolean {
+  return hasMinRole(role, "viewer");
+}

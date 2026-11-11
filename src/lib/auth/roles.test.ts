@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  canAddNotes,
+  canDeleteRecords,
+  canManageBroadcasts,
+  canReassign,
   ACCOUNT_ROLES,
   type AccountRole,
   canDeleteAccount,
@@ -126,5 +130,22 @@ describe("capability predicates", () => {
     expect(canTransferOwnership("admin")).toBe(false);
     expect(canTransferOwnership("agent")).toBe(false);
     expect(canTransferOwnership("viewer")).toBe(false);
+  });
+});
+
+describe("agent/viewer permissions (migration 060)", () => {
+  it("only owner and admin reassign, delete records and manage broadcasts", () => {
+    for (const fn of [canReassign, canDeleteRecords, canManageBroadcasts]) {
+      expect(fn("owner")).toBe(true);
+      expect(fn("admin")).toBe(true);
+      expect(fn("agent")).toBe(false);
+      expect(fn("viewer")).toBe(false);
+    }
+  });
+
+  it("every member, viewers included, can add contact notes", () => {
+    expect(canAddNotes("viewer")).toBe(true);
+    expect(canAddNotes("agent")).toBe(true);
+    expect(canAddNotes("owner")).toBe(true);
   });
 });
