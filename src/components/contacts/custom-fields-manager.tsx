@@ -267,7 +267,7 @@ function FieldRow({
           if (e.key === 'Enter') e.currentTarget.blur();
         }}
         aria-label={t('renameAria', { name: field.field_name })}
-        className="focus:border-primary h-8 border-transparent bg-transparent text-foreground hover:border-border"
+        className="focus:border-primary border-transparent bg-transparent text-foreground hover:border-border"
       />
       <Button
         variant="ghost"

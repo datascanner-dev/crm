@@ -395,7 +395,7 @@ export function ContactDetailView({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="bg-popover border-border text-popover-foreground sm:max-w-lg w-full p-0"
+        className="bg-popover border-border text-popover-foreground w-full p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[40rem]"
       >
         {loading || !contact ? (
           <div className="flex items-center justify-center h-full">
@@ -448,7 +448,6 @@ export function ContactDetailView({
               </div>
               <div className="mt-3">
                 <Button
-                  size="sm"
                   onClick={() => setTemplatePickerOpen(true)}
                   disabled={sendingTemplate}
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
@@ -506,7 +505,7 @@ export function ContactDetailView({
                     <Input
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="bg-muted border-border text-foreground h-8 text-sm"
+                      className="bg-muted border-border text-foreground"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -516,7 +515,7 @@ export function ContactDetailView({
                     <Input
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
-                      className="bg-muted border-border text-foreground h-8 text-sm"
+                      className="bg-muted border-border text-foreground"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -524,7 +523,7 @@ export function ContactDetailView({
                     <Input
                       value={editEmail}
                       onChange={(e) => setEditEmail(e.target.value)}
-                      className="bg-muted border-border text-foreground h-8 text-sm"
+                      className="bg-muted border-border text-foreground"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -532,14 +531,13 @@ export function ContactDetailView({
                     <Input
                       value={editCompany}
                       onChange={(e) => setEditCompany(e.target.value)}
-                      className="bg-muted border-border text-foreground h-8 text-sm"
+                      className="bg-muted border-border text-foreground"
                     />
                   </div>
                   <Button
                     onClick={saveDetails}
                     disabled={savingDetails}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
-                    size="sm"
                   >
                     {savingDetails ? (
                       <Loader2 className="size-3.5 animate-spin" />
@@ -603,7 +601,6 @@ export function ContactDetailView({
                     onClick={addNote}
                     disabled={!newNote.trim() || savingNote}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    size="sm"
                   >
                     {savingNote ? (
                       <Loader2 className="size-3.5 animate-spin" />
@@ -669,7 +666,7 @@ export function ContactDetailView({
                   <div className="space-y-3">
                     {customFields.map((field) => (
                       <div key={field.id} className="space-y-1.5">
-                        <Label className="text-muted-foreground text-xs capitalize">
+                        <Label className="text-muted-foreground">
                           {field.field_name}
                         </Label>
                         <Input
@@ -681,7 +678,7 @@ export function ContactDetailView({
                             }))
                           }
                           placeholder={t('enterCustomField', { name: field.field_name })}
-                          className="bg-muted border-border text-foreground h-8 text-sm placeholder:text-muted-foreground"
+                          className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                         />
                       </div>
                     ))}
@@ -689,7 +686,6 @@ export function ContactDetailView({
                       onClick={saveCustomFields}
                       disabled={savingCustom}
                       className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
-                      size="sm"
                     >
                       {savingCustom ? (
                         <Loader2 className="size-3.5 animate-spin" />
