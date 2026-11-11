@@ -1,5 +1,6 @@
 'use client';
 
+import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
@@ -657,7 +658,7 @@ export default function ContactsPage() {
                     </div>
                   </TableCell>
                   <TableCell className="text-muted-foreground text-xs hidden lg:table-cell">
-                    {new Date(contact.created_at).toLocaleDateString('en-US', {
+                    {new Date(contact.created_at).toLocaleDateString(APP_INTL_LOCALE, {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
