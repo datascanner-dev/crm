@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 // Shared metadata for auth pages (login / signup / forgot-password).
@@ -17,6 +17,12 @@ export const metadata: Metadata = {
       noimageindex: true,
     },
   },
+};
+
+// Mobile auth screens open on the orange Data Scanner hero, so the
+// browser bar matches it instead of the app's dark default.
+export const viewport: Viewport = {
+  themeColor: "#da3300",
 };
 
 export default function AuthLayout({ children }: { children: ReactNode }) {

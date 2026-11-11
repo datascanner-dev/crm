@@ -28,6 +28,7 @@ import { GitBranch, Plus, ChevronDown, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { useCan } from "@/hooks/use-can";
 import { useAuth } from "@/hooks/use-auth";
+import { MobileActionBar } from "@/components/layout/mobile-action-bar";
 import { GatedButton } from "@/components/ui/gated-button";
 import { useTranslations } from "next-intl";
 
@@ -320,17 +321,17 @@ export default function PipelinesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          {/* Pipeline selector dropdown */}
+        <div className="flex w-full items-center gap-3 sm:w-auto">
+          {/* Pipeline selector dropdown — largura total no mobile */}
           <DropdownMenu>
             <DropdownMenuTrigger
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors data-[popup-open]:bg-muted"
+              className="inline-flex min-h-12 w-full items-center gap-2 rounded-[12px] border border-border bg-card px-3.5 py-2 text-sm text-foreground hover:bg-muted transition-colors data-[popup-open]:bg-muted sm:min-h-10 sm:w-auto"
             >
-              <GitBranch className="h-4 w-4 text-primary" />
-              <span className="font-semibold">
+              <GitBranch className="h-4 w-4 shrink-0 text-primary" />
+              <span className="min-w-0 flex-1 truncate text-left font-semibold">
                 {selectedPipeline?.name ?? t("selectPipeline")}
               </span>
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
@@ -369,7 +370,7 @@ export default function PipelinesPage() {
           </DropdownMenu>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 sm:flex">
           <GatedButton
             variant="outline"
             canAct={canEditSettings}
@@ -392,6 +393,29 @@ export default function PipelinesPage() {
           </GatedButton>
         </div>
       </div>
+
+      <MobileActionBar>
+        <GatedButton
+          variant="outline"
+          canAct={canEditSettings}
+          gateReason={tGate("reasons.createPipelines")}
+          onClick={() => setNewPipelineOpen(true)}
+          className="border-border bg-card text-foreground hover:bg-muted"
+        >
+          <Plus className="h-4 w-4" />
+          {t("addPipeline")}
+        </GatedButton>
+        <GatedButton
+          canAct={canCreateDeals}
+          gateReason={tGate("reasons.createDeals")}
+          disabled={!selectedPipelineId || stages.length === 0}
+          onClick={() => handleAddDeal()}
+          className="bg-primary text-primary-foreground hover:bg-primary/90"
+        >
+          <Plus className="h-4 w-4" />
+          {t("addDeal")}
+        </GatedButton>
+      </MobileActionBar>
 
       {/* Board */}
       {pipelines.length === 0 ? (

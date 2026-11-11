@@ -23,6 +23,7 @@ import { useCan } from "@/hooks/use-can"
 import { useTranslations } from "next-intl"
 import type { Automation } from "@/types"
 import { Button } from "@/components/ui/button"
+import { MobileActionBar } from "@/components/layout/mobile-action-bar";
 import { GatedButton } from "@/components/ui/gated-button"
 import { Switch } from "@/components/ui/switch"
 import {
@@ -172,12 +173,24 @@ export default function AutomationsPage() {
           canAct={canCreate}
           gateReason={tGate("reasons.createAutomations")}
           onClick={() => router.push("/automations/new")}
+          wrapperClassName="hidden sm:inline-flex"
           className="bg-primary text-primary-foreground hover:bg-primary/90"
         >
           <Plus className="h-4 w-4" />
           {t("create")}
         </GatedButton>
       </div>
+
+      <MobileActionBar>
+        <GatedButton
+          canAct={canCreate}
+          gateReason={tGate("reasons.createAutomations")}
+          onClick={() => router.push("/automations/new")}
+        >
+          <Plus className="h-4 w-4" />
+          {t("create")}
+        </GatedButton>
+      </MobileActionBar>
 
       {showTemplates && (
         <section>

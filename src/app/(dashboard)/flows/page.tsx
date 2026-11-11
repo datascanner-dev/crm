@@ -21,6 +21,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useCan } from "@/hooks/use-can";
 import { Button } from "@/components/ui/button";
+import { MobileActionBar } from "@/components/layout/mobile-action-bar";
 import { GatedButton } from "@/components/ui/gated-button";
 import {
   Dialog,
@@ -218,11 +219,23 @@ export default function FlowsPage() {
           canAct={canCreate}
           gateReason={tGate("reasons.createFlows")}
           onClick={() => setCreateOpen(true)}
+          wrapperClassName="hidden sm:inline-flex"
         >
           <Plus className="h-4 w-4" />
           {t("newFlow")}
         </GatedButton>
       </header>
+
+      <MobileActionBar>
+        <GatedButton
+          canAct={canCreate}
+          gateReason={tGate("reasons.createFlows")}
+          onClick={() => setCreateOpen(true)}
+        >
+          <Plus className="h-4 w-4" />
+          {t("newFlow")}
+        </GatedButton>
+      </MobileActionBar>
 
       {flows.length === 0 ? (
         <EmptyState

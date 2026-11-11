@@ -14,7 +14,8 @@
     "noAccount": "¿No tienes una cuenta?",
     "createAccount": "Crear cuenta",
     "linkExpired": "Ese enlace expiró. Para restablecer la contraseña, usa “¿Olvidaste tu contraseña?” y pide uno nuevo; si estabas confirmando tu correo, regístrate de nuevo.",
-    "linkInvalid": "No se pudo iniciar sesión con ese enlace. Si estabas confirmando tu correo, es posible que ya esté verificado; inicia sesión abajo. Para restablecer la contraseña, pide un enlace nuevo y ábrelo en el mismo navegador desde el que lo solicitaste."
+    "linkInvalid": "No se pudo iniciar sesión con ese enlace. Si estabas confirmando tu correo, es posible que ya esté verificado; inicia sesión abajo. Para restablecer la contraseña, pide un enlace nuevo y ábrelo en el mismo navegador desde el que lo solicitaste.",
+    "inviteBadge": "Invitación al equipo"
   },
   "Sidebar": {
     "title": "Plantilla de CRM para WhatsApp",
@@ -2252,7 +2253,8 @@
     "creating": "Creando cuenta...",
     "submit": "Crear cuenta",
     "haveAccount": "¿Ya tienes una cuenta?",
-    "signIn": "Iniciar sesión"
+    "signIn": "Iniciar sesión",
+    "inviteBadge": "Invitación al equipo"
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "Revisa tu correo",
@@ -2936,5 +2938,20 @@
       "metaApiStatus": "Error de la API de Meta: {status}",
       "syncFailed": "Error al sincronizar las plantillas"
     }
+  },
+  "AuthCommon": {
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
+  },
+  "PwaInstall": {
+    "title": "Instala Data Scanner CRM",
+    "desc": "Abre tus conversaciones con un toque, a pantalla completa, desde tu pantalla de inicio.",
+    "install": "Instalar app",
+    "notNow": "Ahora no",
+    "close": "Cerrar invitación de instalación",
+    "iosIntro": "Para instalar en iPhone:",
+    "iosStep1": "Toca <strong>Compartir</strong> en la barra de Safari",
+    "iosStep2": "Elige <strong>Agregar a la pantalla de inicio</strong>",
+    "gotIt": "Entendido"
   }
 }

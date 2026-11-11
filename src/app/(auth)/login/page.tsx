@@ -5,18 +5,12 @@ import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { BrandMark } from "@/components/brand/brand-mark";
+import { AuthShell } from "@/components/brand/auth-shell";
+import { PasswordInput } from "@/components/brand/password-input";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { UsersRound } from "lucide-react";
 
 // `useSearchParams` opts the component out of static prerendering
@@ -85,100 +79,105 @@ function LoginPageInner() {
     window.location.href = destination;
   };
 
+  const signupHref = inviteToken
+    ? `/signup?invite=${encodeURIComponent(inviteToken)}`
+    : "/signup";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md border-border bg-card">
-        <CardHeader className="items-center text-center">
-          <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            {inviteToken ? (
-              <UsersRound className="h-6 w-6 text-primary" />
-            ) : (
-              <BrandMark className="h-6 w-6" />
-            )}
+    <AuthShell
+      title={inviteToken ? t("titleAccept") : t("titleWelcome")}
+      description={inviteToken ? t("descAccept") : t("descWelcome")}
+      badge={
+        inviteToken ? (
+          <>
+            <UsersRound className="size-4" aria-hidden="true" />
+            {t("inviteBadge")}
+          </>
+        ) : undefined
+      }
+      icon={
+        inviteToken ? <UsersRound className="size-6 text-primary" /> : undefined
+      }
+      footer={
+        <>
+          {t("noAccount")}{" "}
+          <Link
+            href={signupHref}
+            className="inline-flex min-h-11 items-center font-medium text-primary hover:text-primary/80"
+          >
+            {t("createAccount")}
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleLogin} className="flex flex-col gap-4">
+        {linkErrorMessage && !error && (
+          <div
+            role="status"
+            className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300"
+          >
+            {linkErrorMessage}
           </div>
-          <CardTitle className="text-xl text-foreground">
-            {inviteToken ? t('titleAccept') : t('titleWelcome')}
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            {inviteToken
-              ? t('descAccept')
-              : t('descWelcome')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            {linkErrorMessage && !error && (
-              <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
-                {linkErrorMessage}
-              </div>
-            )}
-            {error && (
-              <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-                {error}
-              </div>
-            )}
+        )}
+        {error && (
+          <div
+            role="alert"
+            className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400"
+          >
+            {error}
+          </div>
+        )}
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email" className="text-muted-foreground">
-                {t('emailLabel')}
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={t('emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
-              />
-            </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="email" className="text-muted-foreground">
+            {t("emailLabel")}
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoCapitalize="none"
+            spellCheck={false}
+            enterKeyHint="next"
+            placeholder={t("emailPlaceholder")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+          />
+        </div>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password" className="text-muted-foreground">
-                {t('passwordLabel')}
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder={t('passwordPlaceholder')}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
-              />
-              {/* Below the input so Tab goes email -> password -> link. */}
-              <Link
-                href="/forgot-password"
-                className="self-end text-sm text-primary hover:text-primary/80"
-              >
-                {t('forgotPassword')}
-              </Link>
-            </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="password" className="text-muted-foreground">
+            {t("passwordLabel")}
+          </Label>
+          <PasswordInput
+            id="password"
+            autoComplete="current-password"
+            enterKeyHint="go"
+            placeholder={t("passwordPlaceholder")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {/* Below the input so Tab goes email -> password -> link. */}
+          <Link
+            href="/forgot-password"
+            className="inline-flex min-h-11 items-center self-end text-sm text-primary hover:text-primary/80"
+          >
+            {t("forgotPassword")}
+          </Link>
+        </div>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="mt-2 h-12 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-            >
-              {loading ? t('signingIn') : t('signIn')}
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {t('noAccount')}{" "}
-            <Link
-              href={
-                inviteToken
-                  ? `/signup?invite=${encodeURIComponent(inviteToken)}`
-                  : "/signup"
-              }
-              className="text-primary hover:text-primary/80"
-            >
-              {t('createAccount')}
-            </Link>
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="h-12 w-full bg-primary text-base text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+        >
+          {loading ? t("signingIn") : t("signIn")}
+        </Button>
+      </form>
+    </AuthShell>
   );
 }

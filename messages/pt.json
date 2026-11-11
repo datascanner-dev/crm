@@ -14,7 +14,8 @@
     "noAccount": "Não tem uma conta?",
     "createAccount": "Criar conta",
     "linkExpired": "Esse link expirou. Para redefinir a senha, use “Esqueceu a senha?” para pedir um novo; se estava confirmando seu e-mail, cadastre-se novamente.",
-    "linkInvalid": "Não foi possível entrar com esse link. Se estava confirmando seu e-mail, ele já pode estar verificado — basta entrar abaixo. Para redefinir a senha, peça um novo link e abra-o no mesmo navegador em que o solicitou."
+    "linkInvalid": "Não foi possível entrar com esse link. Se estava confirmando seu e-mail, ele já pode estar verificado — basta entrar abaixo. Para redefinir a senha, peça um novo link e abra-o no mesmo navegador em que o solicitou.",
+    "inviteBadge": "Convite para equipe"
   },
   "Sidebar": {
     "title": "Data Scanner CRM",
@@ -2252,7 +2253,8 @@
     "creating": "Criando conta...",
     "submit": "Criar conta",
     "haveAccount": "Já tem uma conta?",
-    "signIn": "Entrar"
+    "signIn": "Entrar",
+    "inviteBadge": "Convite para equipe"
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "Verifique seu e-mail",
@@ -2936,5 +2938,20 @@
       "metaApiStatus": "Erro da API da Meta: {status}",
       "syncFailed": "Falha ao sincronizar os modelos"
     }
+  },
+  "AuthCommon": {
+    "showPassword": "Mostrar senha",
+    "hidePassword": "Ocultar senha"
+  },
+  "PwaInstall": {
+    "title": "Instale o Data Scanner CRM",
+    "desc": "Acesse suas conversas em um toque, em tela cheia, direto da tela inicial.",
+    "install": "Instalar app",
+    "notNow": "Agora não",
+    "close": "Fechar convite de instalação",
+    "iosIntro": "Para instalar no iPhone:",
+    "iosStep1": "Toque em <strong>Compartilhar</strong> na barra do Safari",
+    "iosStep2": "Escolha <strong>Adicionar à Tela de Início</strong>",
+    "gotIt": "Entendi"
   }
 }
