@@ -11,7 +11,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UsersRound } from "lucide-react";
 
 // `useSearchParams` opts the component out of static prerendering
 // unless it sits under a Suspense boundary. We split the form into
@@ -87,17 +86,6 @@ function LoginPageInner() {
     <AuthShell
       title={inviteToken ? t("titleAccept") : t("titleWelcome")}
       description={inviteToken ? t("descAccept") : t("descWelcome")}
-      badge={
-        inviteToken ? (
-          <>
-            <UsersRound className="size-4" aria-hidden="true" />
-            {t("inviteBadge")}
-          </>
-        ) : undefined
-      }
-      icon={
-        inviteToken ? <UsersRound className="size-6 text-primary" /> : undefined
-      }
       footer={
         <>
           {t("noAccount")}{" "}
