@@ -2962,6 +2962,9 @@
     "iosIntro": "To install on iPhone:",
     "iosStep1": "Tap <strong>Share</strong> in Safari's toolbar",
     "iosStep2": "Choose <strong>Add to Home Screen</strong>",
+    "androidIntro": "To install on your phone:",
+    "androidStep1": "Tap <strong>⋮</strong> (menu) in the browser corner",
+    "androidStep2": "Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>",
     "gotIt": "Got it"
   }
 }

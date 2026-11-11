@@ -2962,6 +2962,9 @@
     "iosIntro": "Para instalar en iPhone:",
     "iosStep1": "Toca <strong>Compartir</strong> en la barra de Safari",
     "iosStep2": "Elige <strong>Agregar a la pantalla de inicio</strong>",
+    "androidIntro": "Para instalar en el celular:",
+    "androidStep1": "Toca <strong>⋮</strong> (menú) en la esquina del navegador",
+    "androidStep2": "Elige <strong>Instalar app</strong> o <strong>Agregar a la pantalla principal</strong>",
     "gotIt": "Entendido"
   }
 }

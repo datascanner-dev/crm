@@ -2962,6 +2962,9 @@
     "iosIntro": "iPhone에 설치하려면:",
     "iosStep1": "Safari 도구 막대에서 <strong>공유</strong>를 탭하세요",
     "iosStep2": "<strong>홈 화면에 추가</strong>를 선택하세요",
+    "androidIntro": "휴대폰에 설치하려면:",
+    "androidStep1": "브라우저 모서리의 <strong>⋮</strong>(메뉴)를 탭하세요",
+    "androidStep2": "<strong>앱 설치</strong> 또는 <strong>홈 화면에 추가</strong>를 선택하세요",
     "gotIt": "확인"
   }
 }
