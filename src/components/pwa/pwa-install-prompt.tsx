@@ -5,6 +5,21 @@ import { useTranslations } from "next-intl";
 import { Share, SquarePlus, X } from "lucide-react";
 import { BrandMark } from "@/components/brand/brand-mark";
 import { Button } from "@/components/ui/button";
+import {
+  onAccept,
+  onDismiss,
+  readState,
+  shouldShow,
+  writeState,
+} from "@/lib/pwa/install-invite";
+
+function inviteAllowed() {
+  try {
+    return shouldShow(readState(localStorage));
+  } catch {
+    return true;
+  }
+}
 
 // PWA: registers the service worker and invites the user to install the
 // app on their very first visit (no engagement delay).
@@ -14,16 +29,15 @@ import { Button } from "@/components/ui/button";
 //   "Install".
 // - iOS / iPadOS Safari: there is no install API, so the invite shows
 //   the two Share → "Add to Home Screen" steps instead.
-// - Already installed (standalone) or dismissed in the last
-//   DISMISS_DAYS days: nothing is shown.
+// - Already installed (standalone): nothing is shown.
+// - Cancel / accept rules (next 3 logins after a cancel, never after
+//   accepting) live in @/lib/pwa/install-invite.
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-const DISMISS_KEY = "dscrm.pwa.dismissedAt";
-const DISMISS_DAYS = 14;
 
 function isStandalone() {
   return (
@@ -38,14 +52,6 @@ function isIos() {
   return /iPhone|iPad|iPod/.test(ua) || iPadOs;
 }
 
-function recentlyDismissed() {
-  try {
-    const at = Number(localStorage.getItem(DISMISS_KEY));
-    return at > 0 && Date.now() - at < DISMISS_DAYS * 86_400_000;
-  } catch {
-    return false;
-  }
-}
 
 export function PwaInstallPrompt() {
   const t = useTranslations("PwaInstall");
@@ -59,7 +65,7 @@ export function PwaInstallPrompt() {
         .catch(() => {});
     }
 
-    if (isStandalone() || recentlyDismissed()) return;
+    if (isStandalone() || !inviteAllowed()) return;
 
     const onPrompt = (e: Event) => {
       e.preventDefault();
@@ -67,6 +73,9 @@ export function PwaInstallPrompt() {
       setMode("native");
     };
     const onInstalled = () => {
+      try {
+        writeState(localStorage, onAccept(readState(localStorage)));
+      } catch {}
       setDeferred(null);
       setMode("hidden");
     };
@@ -86,12 +95,21 @@ export function PwaInstallPrompt() {
     };
   }, []);
 
+  // Cancelar: volta só nos próximos 3 logins (uma vez em cada).
   const dismiss = useCallback(() => {
     try {
-      localStorage.setItem(DISMISS_KEY, String(Date.now()));
+      writeState(localStorage, onDismiss(readState(localStorage)));
     } catch {
-      // storage unavailable (private mode) — just hide for this visit
+      // storage indisponível (modo privado): esconde só nesta visita
     }
+    setMode("hidden");
+  }, []);
+
+  // Aceitar (instalou, ou "Entendi" no passo a passo do iPhone): não volta mais.
+  const accept = useCallback(() => {
+    try {
+      writeState(localStorage, onAccept(readState(localStorage)));
+    } catch {}
     setMode("hidden");
   }, []);
 
@@ -101,8 +119,8 @@ export function PwaInstallPrompt() {
     const { outcome } = await deferred.userChoice;
     setDeferred(null);
     if (outcome === "dismissed") dismiss();
-    else setMode("hidden");
-  }, [deferred, dismiss]);
+    else accept();
+  }, [deferred, dismiss, accept]);
 
   if (mode === "hidden") return null;
 
@@ -150,7 +168,7 @@ export function PwaInstallPrompt() {
           </ol>
           <Button
             type="button"
-            onClick={dismiss}
+            onClick={accept}
             variant="outline"
             className="mt-3 h-12 w-full text-base"
           >
