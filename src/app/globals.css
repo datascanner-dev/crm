@@ -276,6 +276,25 @@ html[data-theme="rose"] {
   html {
     @apply font-sans;
   }
+  /* Selects nativos: mesma altura (48px), raio (12px) e respiro dos
+   * campos de texto. A seta fica a 14px da borda direita — a mesma
+   * distância do texto até a borda esquerda — em vez de colada na
+   * margem como no padrão do navegador. !important porque várias telas
+   * ainda passam h-9 / px-2 direto na <select>. */
+  select:not([multiple]):not([size]) {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 3rem !important;
+    padding-left: 0.875rem !important;
+    padding-right: 2.625rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-radius: 12px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    background-size: 1rem 1rem;
+  }
 }
 
 /* ============================================================
