@@ -31,17 +31,30 @@ export default function ForgotPasswordPage() {
     setError(null);
     setLoading(true);
 
-    // The emailed link returns to /auth/callback, which exchanges it
-    // for a recovery session and forwards to /reset-password (issue
-    // #592). Supabase must allow this origin under Authentication →
-    // URL Configuration → Redirect URLs, or it silently falls back to
-    // its Site URL; see docs/auth-emails.md.
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
-    });
+    // Envio pelo n8n (Supabase self-hosted sem SMTP) — ver
+    // src/app/api/auth/password-reset/route.ts. A resposta é a mesma
+    // para e-mail com ou sem conta.
+    const res = await fetch("/api/auth/password-reset", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email }),
+    }).catch(() => null);
 
-    if (error) {
-      setError(authErrorMessage(error));
+    if (res?.status === 501) {
+      // Envio pelo n8n não configurado: usa o e-mail do próprio Supabase.
+      // The emailed link returns to /auth/callback, which exchanges it
+      // for a recovery session and forwards to /reset-password (issue
+      // #592); see docs/auth-emails.md.
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
+      });
+      if (error) {
+        setError(authErrorMessage(error));
+        setLoading(false);
+        return;
+      }
+    } else if (!res || !res.ok) {
+      setError(res?.status === 429 ? t("errorTooMany") : t("errorSend"));
       setLoading(false);
       return;
     }
