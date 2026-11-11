@@ -1,10 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Briefcase, ChevronDown, Plus, Radio, UserPlus, Zap } from 'lucide-react'
+import { Briefcase, ChevronDown, ChevronRight, Plus, Radio, UserPlus, Zap } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { buttonVariants } from '@/components/ui/button'
+import { useState } from 'react'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { MobileActionBar } from '@/components/layout/mobile-action-bar'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +22,7 @@ import {
   type DashboardOverview,
   type OverviewRange,
 } from '@/lib/dashboard/overview'
+import { cn } from '@/lib/utils'
 import { Skeleton } from './skeleton'
 import { useFormatDuration } from './use-format-duration'
 import { WhatsAppHealthChip } from './whatsapp-health-chip'
@@ -54,6 +58,7 @@ export function OverviewHeader({
   const router = useRouter()
   const formatDuration = useFormatDuration()
   const firstName = name?.trim().split(/\s+/)[0] || null
+  const [newSheetOpen, setNewSheetOpen] = useState(false)
 
   let context: string | null = null
   if (data) {
@@ -86,19 +91,25 @@ export function OverviewHeader({
           </>
         )}
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
         <WhatsAppHealthChip />
-        <Tabs value={String(range)} onValueChange={(v) => onRangeChange(Number(v) as OverviewRange)}>
-          <TabsList aria-label={t('rangeLabel')} className="group-data-horizontal/tabs:h-12">
+        {/* No mobile o seletor de período ocupa a largura toda. */}
+        <Tabs
+          value={String(range)}
+          onValueChange={(v) => onRangeChange(Number(v) as OverviewRange)}
+          className="w-full sm:w-auto"
+        >
+          <TabsList aria-label={t('rangeLabel')} className="w-full group-data-horizontal/tabs:h-12 sm:w-fit">
             {OVERVIEW_RANGES.map((r) => (
-              <TabsTrigger key={r} value={String(r)} className="px-3 text-sm">
+              <TabsTrigger key={r} value={String(r)} className="flex-1 px-3 text-sm sm:flex-none">
                 {t(`range.${r}`)}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
+        {/* Desktop: menu suspenso. Mobile: botão fixo na base + painel deslizante. */}
         <DropdownMenu>
-          <DropdownMenuTrigger className={buttonVariants()}>
+          <DropdownMenuTrigger className={cn(buttonVariants(), 'hidden sm:inline-flex')}>
             <Plus aria-hidden />
             {t('new')}
             <ChevronDown className="opacity-70" aria-hidden />
@@ -113,6 +124,43 @@ export function OverviewHeader({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <MobileActionBar>
+        <Button onClick={() => setNewSheetOpen(true)} aria-haspopup="dialog">
+          <Plus aria-hidden />
+          {t('new')}
+        </Button>
+      </MobileActionBar>
+      <Sheet open={newSheetOpen} onOpenChange={setNewSheetOpen}>
+        <SheetContent
+          side="bottom"
+          className="gap-0 rounded-t-3xl pb-[max(1rem,env(safe-area-inset-bottom))] sm:hidden [&_[data-slot=sheet-close]]:top-3 [&_[data-slot=sheet-close]]:right-3 [&_[data-slot=sheet-close]]:size-11"
+        >
+          <SheetHeader className="px-5 pt-5 pb-3 pr-14">
+            <SheetTitle className="text-lg font-semibold">{t('new')}</SheetTitle>
+          </SheetHeader>
+          <ul className="flex flex-col px-3 pb-2">
+            {NEW_ITEMS.map(({ key, href, icon: Icon }) => (
+              <li key={key}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNewSheetOpen(false)
+                    router.push(href)
+                  }}
+                  className="flex min-h-14 w-full items-center gap-3 rounded-[12px] px-3 text-left text-base text-foreground hover:bg-muted focus-visible:ring-2 focus-visible:ring-focus/50 focus-visible:outline-none"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-[12px] bg-primary/10 text-primary">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <span className="flex-1">{t(key)}</span>
+                  <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }

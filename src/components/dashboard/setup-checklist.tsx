@@ -16,7 +16,7 @@ export function SetupChecklist({ setup }: { setup: OverviewSetup }) {
   const nextId = steps.find((s) => !s.done)?.id
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
       <Card>
         <CardHeader>
           <CardTitle>{t('title')}</CardTitle>
@@ -35,7 +35,7 @@ export function SetupChecklist({ setup }: { setup: OverviewSetup }) {
           </div>
           <ol className="divide-y divide-border">
             {steps.map((s) => (
-              <li key={s.id} className="flex items-center gap-3 py-3">
+              <li key={s.id} className="flex flex-wrap items-center gap-x-3 gap-y-3 py-3 sm:flex-nowrap">
                 <span
                   className={cn(
                     'flex size-6 shrink-0 items-center justify-center rounded-full border',
@@ -51,10 +51,14 @@ export function SetupChecklist({ setup }: { setup: OverviewSetup }) {
                   </p>
                   {!s.done ? <p className="text-xs text-muted-foreground">{t(`steps.${s.id}.description`)}</p> : null}
                 </div>
+                {/* Mobile: botão abaixo da descrição, na largura do texto. Desktop: mesma linha. */}
                 {!s.done ? (
                   <Link
                     href={s.href}
-                    className={buttonVariants({ variant: s.id === nextId ? 'default' : 'outline' })}
+                    className={cn(
+                      buttonVariants({ variant: s.id === nextId ? 'default' : 'outline' }),
+                      'ml-9 w-[calc(100%-2.25rem)] sm:ml-0 sm:w-auto',
+                    )}
                   >
                     {t(`steps.${s.id}.action`)}
                   </Link>
