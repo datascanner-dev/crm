@@ -340,7 +340,8 @@ export function AiConfig() {
 
             <div className="space-y-2">
               <Label htmlFor="ai-key">{t('apiKey')}</Label>
-              <div className="flex gap-2">
+              {/* Mobile: campo na largura toda e "Testar chave" abaixo. */}
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
                   <Input
                     id="ai-key"
@@ -377,6 +378,7 @@ export function AiConfig() {
                   variant="outline"
                   onClick={handleTest}
                   disabled={disabled || testing}
+                  className="w-full sm:w-auto"
                 >
                   {testing ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -389,7 +391,7 @@ export function AiConfig() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ai-embeddings-key">
+              <Label htmlFor="ai-embeddings-key" className="flex-wrap gap-x-1 gap-y-1 leading-snug">
                 {t('embeddingsKey')}{' '}
                 <span className="font-normal text-muted-foreground">
                   {t('optionalSemanticSearch')}
