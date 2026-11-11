@@ -1042,6 +1042,8 @@ export function TemplateManager() {
                           type="button"
                           variant="ghost"
                           size="icon"
+                          aria-label="Remover botão"
+                          title="Remover botão"
                           onClick={() => removeButton(i)}
                           className="text-muted-foreground hover:text-red-400 hover:bg-red-950/30 size-7"
                         >
