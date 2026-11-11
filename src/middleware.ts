@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
+import { signupAllowed } from '@/lib/auth/signup-open'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
@@ -40,6 +41,17 @@ export async function middleware(request: NextRequest) {
       response.cookies.set(cookie)
     })
     return response
+  }
+
+  // Cadastro público fechado: /signup sem convite volta para o login.
+  if (
+    request.nextUrl.pathname === '/signup' &&
+    !signupAllowed(request.nextUrl.searchParams.get('invite'))
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.search = ''
+    return withRefreshedCookies(NextResponse.redirect(url))
   }
 
   // Auth pages - redirect to dashboard if already logged in.
