@@ -400,6 +400,8 @@ export interface Deal {
   contact_id: string | null;
   conversation_id?: string;
   assigned_to?: string;
+  /** Quando o responsável abriu o negócio (migration 061). NULL = novo. */
+  assignee_seen_at?: string | null;
   title: string;
   value: number;
   currency?: string;
