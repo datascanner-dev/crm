@@ -349,6 +349,7 @@ export default function BroadcastDetailPage() {
           <Button
             variant="outline"
             size="icon"
+            aria-label="Voltar para disparos"
             onClick={() => router.push('/broadcasts')}
             className="border-border"
           >
