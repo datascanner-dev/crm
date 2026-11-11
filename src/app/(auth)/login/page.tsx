@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { AuthShell } from "@/components/brand/auth-shell";
 import { PasswordInput } from "@/components/brand/password-input";
 import { registerLogin } from "@/lib/pwa/install-invite";
+import { signupAllowed } from "@/lib/auth/signup-open";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,15 +91,19 @@ function LoginPageInner() {
       title={inviteToken ? t("titleAccept") : t("titleWelcome")}
       description={inviteToken ? t("descAccept") : t("descWelcome")}
       footer={
-        <>
-          {t("noAccount")}{" "}
-          <Link
-            href={signupHref}
-            className="inline-flex min-h-11 items-center font-medium text-primary hover:text-primary/80"
-          >
-            {t("createAccount")}
-          </Link>
-        </>
+        // Cadastro fechado ao público: "Criar conta" só aparece para
+        // quem chegou por um convite.
+        signupAllowed(inviteToken) ? (
+          <>
+            {t("noAccount")}{" "}
+            <Link
+              href={signupHref}
+              className="inline-flex min-h-11 items-center font-medium text-primary hover:text-primary/80"
+            >
+              {t("createAccount")}
+            </Link>
+          </>
+        ) : undefined
       }
     >
       <form onSubmit={handleLogin} className="flex flex-col gap-4">
