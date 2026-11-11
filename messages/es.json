@@ -2281,7 +2281,9 @@
     "emailLabel": "Correo electrónico",
     "emailPlaceholder": "you@example.com",
     "sending": "Enviando...",
-    "sendLink": "Enviar enlace de restablecimiento"
+    "sendLink": "Enviar enlace de restablecimiento",
+    "errorTooMany": "Demasiadas solicitudes. Espera unos minutos e inténtalo de nuevo.",
+    "errorSend": "No pudimos enviar el correo ahora. Inténtalo de nuevo en unos instantes."
   },
   "ResetPasswordPage": {
     "title": "Elige una nueva contraseña",
