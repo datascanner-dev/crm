@@ -7,6 +7,9 @@
 // - Se a pessoa aceitar (instalar, ou "Entendi" no passo a passo do
 //   iPhone), ele deixa de aparecer.
 //
+// - Abrir qualquer página com ?instalar (ex.: /login?instalar) zera o
+//   estado e o convite aparece de novo, como no primeiro acesso.
+//
 // Estado guardado no localStorage do navegador (por aparelho).
 
 export const INVITE_KEY = "dscrm.pwa.invite";
@@ -82,6 +85,11 @@ export function writeState(storage: StorageLike, state: InviteState): void {
   } catch {
     // modo privado / storage indisponível: vale só para esta visita
   }
+}
+
+/** Volta ao estado de primeiro acesso (link com ?instalar). */
+export function resetState(storage: StorageLike): void {
+  writeState(storage, { ...INITIAL_STATE });
 }
 
 /** Chamado pela tela de login depois de entrar com sucesso. */

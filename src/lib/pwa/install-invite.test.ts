@@ -62,3 +62,16 @@ describe("PWA install invite", () => {
     expect(shouldShow(readState(st))).toBe(true);
   });
 });
+
+describe("resetState (?instalar)", () => {
+  it("volta ao primeiro acesso mesmo depois de aceitar ou esgotar os lembretes", async () => {
+    const { resetState, readState, writeState, shouldShow, INITIAL_STATE } = await import("./install-invite");
+    const mem = new Map<string, string>();
+    const storage = { getItem: (k: string) => mem.get(k) ?? null, setItem: (k: string, v: string) => void mem.set(k, v) };
+    writeState(storage, { ...INITIAL_STATE, accepted: true });
+    mem.set("dscrm.pwa.dismissedAt", "1");
+    expect(shouldShow(readState(storage))).toBe(false);
+    resetState(storage);
+    expect(shouldShow(readState(storage))).toBe(true);
+  });
+});
