@@ -33,6 +33,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations } from 'next-intl';
+import { APP_INTL_LOCALE } from '@/lib/intl-locale';
 import { Card, CardContent } from '@/components/ui/card';
 import { SettingsPanelHead } from './settings-panel-head';
 import {
@@ -88,7 +89,7 @@ interface TemplateFormData {
 const emptyForm: TemplateFormData = {
   name: '',
   category: 'Marketing',
-  language: 'en_US',
+  language: 'pt_BR',
   header_format: 'none',
   header_content: '',
   header_media_url: '',
@@ -100,6 +101,7 @@ const emptyForm: TemplateFormData = {
 };
 
 const COMMON_LANGUAGE_CODES = [
+  'pt_BR',
   'en_US',
   'en_GB',
   'en',
@@ -110,7 +112,6 @@ const COMMON_LANGUAGE_CODES = [
   'fr_FR',
   'de',
   'it',
-  'pt_BR',
   'pt_PT',
   'nl',
   'pl',
@@ -118,6 +119,21 @@ const COMMON_LANGUAGE_CODES = [
   'tr',
   'lt',
 ];
+
+// Nome do idioma no idioma da interface + código exato da Meta:
+// "Português (Brasil) · pt_BR".
+function languageOptionLabel(code: string): string {
+  try {
+    const names = new Intl.DisplayNames([APP_INTL_LOCALE], { type: 'language' });
+    const name = names.of(code.replace('_', '-'));
+    if (name && name !== code) {
+      return `${name.charAt(0).toUpperCase()}${name.slice(1)} · ${code}`;
+    }
+  } catch {
+    // Intl.DisplayNames indisponível: mostra só o código.
+  }
+  return code;
+}
 
 function emptyButton(type: TemplateButton['type']): TemplateButton {
   switch (type) {
@@ -226,7 +242,7 @@ export function TemplateManager() {
     return {
       name: form.name.trim(),
       category: form.category,
-      language: form.language.trim() || 'en_US',
+      language: form.language.trim() || 'pt_BR',
       header_type: form.header_format === 'none' ? undefined : form.header_format,
       header_content:
         form.header_format === 'text' ? form.header_content.trim() : undefined,
@@ -728,7 +744,7 @@ export function TemplateManager() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label className="text-muted-foreground">{t('category')}</Label>
                 <Select
@@ -765,21 +781,31 @@ export function TemplateManager() {
 
               <div className="space-y-2">
                 <Label className="text-muted-foreground">{t('language')}</Label>
-                <Input
-                  list="template-language-codes"
-                  placeholder="en_US"
+                {/* Mesmo select da Categoria (chevron, lista abaixo do campo).
+                    Código fora da lista (modelo antigo) entra como opção extra. */}
+                <Select
                   value={form.language}
-                  onChange={(e) =>
-                    setForm({ ...form, language: e.target.value })
-                  }
+                  onValueChange={(val) => setForm({ ...form, language: val as string })}
                   disabled={editingId !== null}
-                  className="bg-muted border-border text-foreground placeholder:text-muted-foreground disabled:opacity-60 disabled:cursor-not-allowed"
-                />
-                <datalist id="template-language-codes">
-                  {COMMON_LANGUAGE_CODES.map((code) => (
-                    <option key={code} value={code} />
-                  ))}
-                </datalist>
+                >
+                  <SelectTrigger className="w-full bg-muted border-border text-foreground disabled:opacity-60 disabled:cursor-not-allowed">
+                    <SelectValue>{languageOptionLabel(form.language)}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent className="max-h-72 bg-popover border-border">
+                    {(COMMON_LANGUAGE_CODES.includes(form.language) || !form.language
+                      ? COMMON_LANGUAGE_CODES
+                      : [form.language, ...COMMON_LANGUAGE_CODES]
+                    ).map((code) => (
+                      <SelectItem
+                        key={code}
+                        value={code}
+                        className="text-popover-foreground focus:bg-muted focus:text-popover-foreground"
+                      >
+                        {languageOptionLabel(code)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <p className="text-[11px] text-muted-foreground">
                   {editingId ? (
                     t('langFixed')
