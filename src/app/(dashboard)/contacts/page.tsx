@@ -369,7 +369,8 @@ export default function ContactsPage() {
             {totalCount > 0 ? t('subtitle', { count: totalCount }) : t('subtitleZero')}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        {/* No celular os botões rolam na horizontal em vez de quebrar a tela. */}
+        <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden [&>*]:shrink-0">
           {canEditSettings && (
             <Button
               variant="outline"
@@ -405,7 +406,7 @@ export default function ContactsPage() {
       {/* Search + tag filter */}
       <div className="space-y-2">
         <div className="flex flex-col sm:flex-row gap-2">
-          <div className="relative w-full max-w-sm">
+          <div className="relative w-full sm:max-w-sm">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               value={search}
