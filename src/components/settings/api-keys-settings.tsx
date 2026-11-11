@@ -22,6 +22,7 @@ import { Copy, KeyRound, Loader2, Plus, Trash2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { MobileActionBar } from '@/components/layout/mobile-action-bar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -142,18 +143,27 @@ export function ApiKeysSettings() {
         description={
           t.rich('description', {
             apiCode: (chunks: React.ReactNode) => <code className="text-xs">{chunks}</code>,
-            headerCode: (chunks: React.ReactNode) => <code className="text-xs">{chunks}</code>
+            headerCode: (chunks: React.ReactNode) => <code className="text-xs">{chunks}</code>,
+            keyPlaceholder: '<key>'
           })
         }
         action={
           <RequireRole min="admin">
-            <Button onClick={() => setCreateOpen(true)}>
+            <Button onClick={() => setCreateOpen(true)} className="hidden sm:inline-flex">
               <Plus className="size-4" />
               {t('newApiKey')}
             </Button>
           </RequireRole>
         }
       />
+      <RequireRole min="admin">
+        <MobileActionBar>
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus className="size-4" />
+            {t('newApiKey')}
+          </Button>
+        </MobileActionBar>
+      </RequireRole>
 
       {keys.length === 0 ? (
         <Card>

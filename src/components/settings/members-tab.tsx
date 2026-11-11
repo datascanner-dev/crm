@@ -74,6 +74,7 @@ import {
   PresenceDot,
 } from '@/components/presence/presence-dot';
 import { InviteMemberDialog } from './invite-member-dialog';
+import { MobileActionBar } from '@/components/layout/mobile-action-bar';
 import { SettingsPanelHead } from './settings-panel-head';
 import { ROLE_META } from './role-meta';
 
@@ -288,13 +289,21 @@ export function MembersTab() {
         description={t('description')}
         action={
           <RequireRole min="admin">
-            <Button onClick={() => setInviteOpen(true)}>
+            <Button onClick={() => setInviteOpen(true)} className="hidden sm:inline-flex">
               <Plus className="size-4" />
               {t('inviteMember')}
             </Button>
           </RequireRole>
         }
       />
+      <RequireRole min="admin">
+        <MobileActionBar>
+          <Button onClick={() => setInviteOpen(true)}>
+            <Plus className="size-4" />
+            {t('inviteMember')}
+          </Button>
+        </MobileActionBar>
+      </RequireRole>
 
       {/* Live presence summary across the roster. Updates without a
           full refresh as heartbeats and the local re-derive tick land. */}

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { MobileActionBar } from "@/components/layout/mobile-action-bar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -131,19 +132,25 @@ export function QuickRepliesManager() {
         title={t("title")}
         description={t("description")}
         action={
-          <Button onClick={openCreate}>
+          <Button onClick={openCreate} className="hidden sm:inline-flex">
             <Plus className="mr-1 h-4 w-4" />
             {t("new")}
           </Button>
         }
       />
+      <MobileActionBar>
+        <Button onClick={openCreate}>
+          <Plus className="h-4 w-4" />
+          {t("new")}
+        </Button>
+      </MobileActionBar>
 
       {loading ? (
         <div className="flex justify-center py-10">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
         </div>
       ) : items.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
+        <p className="rounded-[12px] border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
           {t("empty")}
         </p>
       ) : (

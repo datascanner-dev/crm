@@ -27,6 +27,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { fetchAccountTemplates } from '@/lib/settings/account-catalog';
 import { canEditTemplateCategory } from '@/lib/whatsapp/template-category-edit';
 import { Button } from '@/components/ui/button';
+import { MobileActionBar } from '@/components/layout/mobile-action-bar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -525,7 +526,7 @@ export function TemplateManager() {
         title={t('title')}
         description={t('description')}
         action={
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 sm:flex">
             <Button
               variant="outline"
               onClick={handleSyncFromMeta}
@@ -542,6 +543,21 @@ export function TemplateManager() {
           </div>
         }
       />
+      <MobileActionBar>
+        <Button
+          variant="outline"
+          onClick={handleSyncFromMeta}
+          disabled={syncing}
+          title={t('syncTitle')}
+        >
+          <RefreshCw className={`size-4 ${syncing ? 'animate-spin' : ''}`} />
+          <span className="truncate">{syncing ? t('syncing') : t('syncShort')}</span>
+        </Button>
+        <Button onClick={openCreate}>
+          <Plus className="size-4" />
+          <span className="truncate">{t('newTemplate')}</span>
+        </Button>
+      </MobileActionBar>
 
       {templates.length === 0 ? (
         <Card>
