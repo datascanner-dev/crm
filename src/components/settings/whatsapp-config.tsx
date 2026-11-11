@@ -1,5 +1,6 @@
 'use client';
 
+import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import {
@@ -687,7 +688,7 @@ export function WhatsAppConfig() {
                   dangerouslySetInnerHTML={{
                     __html: t('subscribedSince', {
                       date: config.registered_at
-                        ? new Date(config.registered_at).toLocaleString()
+                        ? new Date(config.registered_at).toLocaleString(APP_INTL_LOCALE)
                         : t('unknownDate'),
                     }),
                   }}

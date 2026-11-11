@@ -21,6 +21,7 @@
 //   the role anyway.
 // ============================================================
 
+import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -108,7 +109,7 @@ const EDITABLE_ROLES: { value: AccountRole }[] = [
 function fmtDate(iso: string): string {
   // Match the rest of the dashboard's locale-light formatting.
   const d = new Date(iso);
-  return d.toLocaleDateString(undefined, {
+  return d.toLocaleDateString(APP_INTL_LOCALE, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
