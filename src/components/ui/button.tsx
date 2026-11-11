@@ -33,6 +33,15 @@ const buttonVariants = cva(
         "icon-lg": "size-9",
       },
     },
+    // Botões principais (primários) do Data Scanner CRM: 48px de altura.
+    compoundVariants: [
+      {
+        variant: "default",
+        size: ["default", "lg"],
+        className:
+          "h-12 gap-2 px-5 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",
