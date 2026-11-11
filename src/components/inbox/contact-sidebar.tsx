@@ -1,5 +1,6 @@
 "use client";
 
+import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -237,7 +238,7 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
                     <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
                       <span>
                         {deal.currency ?? "$"}
-                        {deal.value.toLocaleString()}
+                        {deal.value.toLocaleString(APP_INTL_LOCALE)}
                       </span>
                       {deal.stage && (
                         <span
