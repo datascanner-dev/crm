@@ -1852,7 +1852,8 @@
         "Marketing": "Marketing",
         "Utility": "Utilidad",
         "Authentication": "Autenticación"
-      }
+      },
+      "syncShort": "Sincronizar"
     },
     "roles": {
       "admin": "Administrador",
@@ -2082,7 +2083,7 @@
     },
     "apiKeys": {
       "title": "Claves de API",
-      "description": "Las claves autentican la API REST pública (<apiCode>/api/v1</apiCode>) para que construyas tus propias automatizaciones. Envíalas como <headerCode>Authorization: Bearer &lt;key&gt;</headerCode>.",
+      "description": "Las claves autentican la API REST pública (<apiCode>/api/v1</apiCode>) para que construyas tus propias automatizaciones. Envíalas como <headerCode>Authorization: Bearer {keyPlaceholder}</headerCode>.",
       "newApiKey": "Nueva clave de API",
       "noApiKeys": "Aún no hay claves de API.",
       "createOneHint": "Haz clic en <bold>Nueva clave de API</bold> para crear una.",

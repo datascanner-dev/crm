@@ -1852,7 +1852,8 @@
         "Marketing": "Marketing",
         "Utility": "Utility",
         "Authentication": "Authentication"
-      }
+      },
+      "syncShort": "Sync"
     },
     "roles": {
       "admin": "Admin",
@@ -2082,7 +2083,7 @@
     },
     "apiKeys": {
       "title": "API keys",
-      "description": "Keys authenticate the public REST API (<apiCode>/api/v1</apiCode>) so you can build your own automations. Send them as <headerCode>Authorization: Bearer &lt;key&gt;</headerCode>.",
+      "description": "Keys authenticate the public REST API (<apiCode>/api/v1</apiCode>) so you can build your own automations. Send them as <headerCode>Authorization: Bearer {keyPlaceholder}</headerCode>.",
       "newApiKey": "New API key",
       "noApiKeys": "No API keys yet.",
       "createOneHint": "Click <bold>New API key</bold> to create one.",
