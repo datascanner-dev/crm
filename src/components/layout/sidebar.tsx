@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useTotalUnread } from "@/hooks/use-total-unread";
 import { useUnreadNotifications } from "@/hooks/use-unread-notifications";
+import { useNewAssignedDeals } from "@/hooks/use-new-assigned-deals";
 import {
   Bell,
   Bot,
@@ -123,6 +124,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
   const { profile, profileLoading, account, accountRole, signOut } = useAuth();
   const totalUnread = useTotalUnread();
   const unreadNotifications = useUnreadNotifications();
+  const newAssignedDeals = useNewAssignedDeals();
   // Only surface the account-name strip when it actually carries
   // information. A solo user's personal account is named after them
   // (the 017 signup trigger seeds it from `full_name`), so showing it
@@ -258,6 +260,9 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               // viewing this section".
               const showNotificationBadge =
                 item.href === "/notifications" && unreadNotifications > 0;
+              // Negócios atribuídos a mim que ainda não abri.
+              const showNewDealsBadge =
+                item.href === "/pipelines" && newAssignedDeals > 0;
 
               return (
                 <li key={item.href}>
@@ -302,6 +307,17 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                         )}
                       >
                         {unreadNotifications > 9 ? "9+" : unreadNotifications}
+                      </span>
+                    )}
+                    {showNewDealsBadge && (
+                      <span
+                        aria-label={t("newAssignedDeals", { count: newAssignedDeals })}
+                        className={cn(
+                          "flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground",
+                          collapsed && "lg:absolute lg:top-0.5 lg:right-1 lg:h-4 lg:min-w-4 lg:text-[9px]",
+                        )}
+                      >
+                        {newAssignedDeals > 99 ? "99+" : newAssignedDeals}
                       </span>
                     )}
                   </Link>
