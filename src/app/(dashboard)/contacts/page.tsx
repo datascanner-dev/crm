@@ -377,9 +377,9 @@ export default function ContactsPage() {
             <Button
               variant="outline"
               onClick={() => setCustomFieldsOpen(true)}
-              className="w-full border-border text-muted-foreground hover:bg-muted sm:w-auto"
+              className="w-full border-border px-3 text-muted-foreground hover:bg-muted sm:w-auto sm:px-5"
             >
-              <SlidersHorizontal className="size-4" />
+              <SlidersHorizontal className="hidden size-4 sm:block" />
               <span className="truncate">{t('customFieldsBtn')}</span>
             </Button>
           )}
@@ -390,7 +390,7 @@ export default function ContactsPage() {
             onClick={() => setImportOpen(true)}
             className="w-full border-border text-muted-foreground hover:bg-muted sm:w-auto"
           >
-            <Upload className="size-4" />
+            <Upload className="hidden size-4 sm:block" />
             {t('importBtn')}
           </GatedButton>
           <GatedButton
