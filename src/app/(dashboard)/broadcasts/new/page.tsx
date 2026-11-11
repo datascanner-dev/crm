@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
+import { useCan } from '@/hooks/use-can';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { MessageTemplate } from '@/types';
 import { Step1ChooseTemplate } from '@/components/broadcasts/step1-choose-template';
@@ -24,7 +26,9 @@ const steps = [
 export default function NewBroadcastPage() {
   const router = useRouter();
   const t = useTranslations('Broadcasts.new');
-  const { accountId } = useAuth();
+  const { accountId, profileLoading } = useAuth();
+  // Disparos: só Proprietário/Administrador (migration 060).
+  const canManage = useCan('manage-broadcasts');
   const { createAndSendBroadcast, isProcessing, progress } = useBroadcastSending();
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -129,6 +133,18 @@ export default function NewBroadcastPage() {
     }
     toast.success(t('toastDraftSaved'));
     router.push('/broadcasts');
+  }
+
+  if (!profileLoading && !canManage) {
+    return (
+      <div className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-[12px] border border-border bg-card p-8 text-center">
+        <p className="text-base font-semibold text-foreground">{t('adminOnlyTitle')}</p>
+        <p className="text-sm text-muted-foreground">{t('adminOnlyDesc')}</p>
+        <Button variant="outline" onClick={() => router.push('/broadcasts')}>
+          {t('adminOnlyBack')}
+        </Button>
+      </div>
+    );
   }
 
   return (
