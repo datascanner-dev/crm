@@ -159,10 +159,16 @@ function Metric({
   t: any;
 }) {
   return (
-    <div className="w-[9.5rem] shrink-0 snap-start rounded-lg bg-muted/50 px-3 py-2 sm:w-auto sm:p-3">
-      <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+    <div className="w-[9.5rem] shrink-0 snap-start rounded-lg bg-muted/50 p-3 sm:w-auto">
+      {/* Mobile: ícone + info na 1ª linha, título em até 2 linhas embaixo.
+          Desktop: tudo em uma linha, como antes. */}
+      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground sm:flex-nowrap sm:text-[10px]">
         {icon}
-        <span className="truncate">{label}</span>
+        {/* Reserva 2 linhas e alinha o título pela base: o número fica
+            sempre 16px abaixo da última linha, em todos os cards. */}
+        <span className="order-last flex min-h-[2.5em] basis-full items-end leading-[1.25] sm:order-none sm:min-h-0 sm:min-w-0 sm:basis-auto">
+          <span className="line-clamp-2 max-w-[6.5rem] sm:line-clamp-1 sm:max-w-none">{label}</span>
+        </span>
         <Tooltip>
           <TooltipTrigger
             render={
@@ -180,7 +186,7 @@ function Metric({
           </TooltipContent>
         </Tooltip>
       </div>
-      <p className="mt-0.5 truncate text-sm font-semibold text-foreground sm:mt-1 sm:text-base">{value}</p>
+      <p className="mt-4 truncate text-xl leading-7 font-semibold text-foreground sm:mt-1 sm:text-base sm:leading-6">{value}</p>
     </div>
   );
 }
