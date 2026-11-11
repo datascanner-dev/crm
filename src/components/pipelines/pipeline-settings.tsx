@@ -335,7 +335,6 @@ export function PipelineSettings({
                   />
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={handleAddStage}
                     disabled={!newStageName.trim()}
                     className="shrink-0 border-border bg-transparent text-muted-foreground hover:bg-muted"
@@ -429,7 +428,7 @@ function SortableStageRow({
       <Input
         value={stage.name}
         onChange={(e) => onNameChange(e.target.value)}
-        className="h-7 flex-1 border-transparent bg-transparent text-sm text-foreground focus:border-border"
+        className="flex-1 border-transparent bg-transparent text-foreground focus:border-border"
       />
       <Button
         variant="ghost"
