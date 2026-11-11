@@ -28,6 +28,7 @@ import { GitBranch, Plus, ChevronDown, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { useCan } from "@/hooks/use-can";
 import { useAuth } from "@/hooks/use-auth";
+import { DEAL_SEEN_EVENT } from "@/hooks/use-new-assigned-deals";
 import { MobileActionBar } from "@/components/layout/mobile-action-bar";
 import { GatedButton } from "@/components/ui/gated-button";
 import { useTranslations } from "next-intl";
@@ -54,7 +55,8 @@ export default function PipelinesPage() {
   const supabase = createClient();
   const canEditSettings = useCan("edit-settings");
   const canCreateDeals = useCan("send-messages");
-  const { accountId } = useAuth();
+  const { accountId, profile } = useAuth();
+  const myProfileId = profile?.id;
 
   const [pipelines, setPipelines] = useState<Pipeline[]>([]);
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>("");
@@ -105,7 +107,9 @@ export default function PipelinesPage() {
     async (pipelineId: string) => {
       const { data } = await supabase
         .from("deals")
-        .select("*, contact:contacts(*), assignee:profiles!deals_assigned_to_fkey(*)")
+        .select(
+          "*, contact:contacts(*, custom_values:contact_custom_values(value, field:custom_fields(field_name))), assignee:profiles!deals_assigned_to_fkey(*)",
+        )
         .eq("pipeline_id", pipelineId)
         .order("created_at", { ascending: false });
       return (data ?? []) as Deal[];
@@ -245,11 +249,25 @@ export default function PipelinesPage() {
     [stages],
   );
 
-  const handleEditDeal = useCallback((deal: Deal) => {
-    setEditingDeal(deal);
-    setDefaultStageId(deal.stage_id);
-    setDealFormOpen(true);
-  }, []);
+  const handleEditDeal = useCallback(
+    (deal: Deal) => {
+      setEditingDeal(deal);
+      setDefaultStageId(deal.stage_id);
+      setDealFormOpen(true);
+
+      // Abriu um negócio novo atribuído a mim: marca como visto (badge).
+      if (myProfileId && deal.assigned_to === myProfileId && !deal.assignee_seen_at) {
+        const seenAt = new Date().toISOString();
+        setDeals((prev) =>
+          prev.map((d) => (d.id === deal.id ? { ...d, assignee_seen_at: seenAt } : d)),
+        );
+        void supabase
+          .rpc("mark_deal_seen", { p_deal_id: deal.id })
+          .then(() => window.dispatchEvent(new Event(DEAL_SEEN_EVENT)));
+      }
+    },
+    [myProfileId, supabase],
+  );
 
   async function handleCreatePipeline() {
     const name = newPipelineName.trim();
