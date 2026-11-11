@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { addContactTag, deleteContactTag } from '@/lib/contacts/tag-api';
 import { useAuth } from '@/hooks/use-auth';
+import { useCan } from '@/hooks/use-can';
 import { formatCurrency } from '@/lib/currency';
 import { toast } from 'sonner';
 import type { Contact, Tag, ContactTag, ContactNote, CustomField, ContactCustomValue, Deal, MessageTemplate } from '@/types';
@@ -60,6 +61,8 @@ export function ContactDetailView({
   onUpdated,
 }: ContactDetailViewProps) {
   const t = useTranslations('Contacts.detailView');
+  // Visualizador adiciona notas, mas só Agente+ exclui (migration 060).
+  const canEditNotes = useCan('send-messages');
   const supabase = createClient();
   const { accountId, defaultCurrency } = useAuth();
 
@@ -630,12 +633,14 @@ export function ContactDetailView({
                           <p className="text-sm text-muted-foreground whitespace-pre-wrap flex-1">
                             {note.note_text}
                           </p>
-                          <button
-                            onClick={() => deleteNote(note.id)}
-                            className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-400 transition-all cursor-pointer shrink-0"
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
+                          {canEditNotes && (
+                            <button
+                              onClick={() => deleteNote(note.id)}
+                              className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-400 transition-all cursor-pointer shrink-0"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-1.5">
                           {new Date(note.created_at).toLocaleDateString(APP_INTL_LOCALE, {
