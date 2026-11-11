@@ -836,7 +836,10 @@
       "toastMarkedLost": "Marked as lost",
       "toastReopened": "Deal reopened",
       "toastFailedDelete": "Failed to delete deal",
-      "toastDeleted": "Deal deleted"
+      "toastDeleted": "Deal deleted",
+      "leadData": "Lead data",
+      "leadDataHint": "Contact custom fields. Changes are saved with the deal.",
+      "toastCustomFieldsFailed": "Deal saved, but the lead data could not be updated"
     },
     "settings": {
       "managePipeline": "Manage Pipeline",

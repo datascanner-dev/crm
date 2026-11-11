@@ -836,7 +836,10 @@
       "toastMarkedLost": "Marcado como perdido",
       "toastReopened": "Negócio reaberto",
       "toastFailedDelete": "Falha ao excluir o negócio",
-      "toastDeleted": "Negócio excluído"
+      "toastDeleted": "Negócio excluído",
+      "leadData": "Dados do lead",
+      "leadDataHint": "Campos personalizados do contato. As alterações são salvas junto com o negócio.",
+      "toastCustomFieldsFailed": "Negócio salvo, mas os dados do lead não foram atualizados"
     },
     "settings": {
       "managePipeline": "Gerenciar funil",
