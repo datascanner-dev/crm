@@ -167,7 +167,9 @@ function Metric({
         {/* Reserva 2 linhas e alinha o título pela base: o número fica
             sempre 16px abaixo da última linha, em todos os cards. */}
         <span className="order-last flex min-h-[2.5em] basis-full items-end leading-[1.25] sm:order-none sm:min-h-0 sm:min-w-0 sm:basis-auto">
-          <span className="line-clamp-2 max-w-[6.5rem] sm:line-clamp-1 sm:max-w-none">{label}</span>
+          {/* Quebra de linha definida no texto (\n): no mobile vira 2 linhas,
+              no desktop o \n vira espaço. */}
+          <span className="line-clamp-2 whitespace-pre-line sm:line-clamp-1 sm:whitespace-normal">{label}</span>
         </span>
         <Tooltip>
           <TooltipTrigger
