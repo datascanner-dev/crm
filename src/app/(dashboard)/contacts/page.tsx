@@ -56,6 +56,7 @@ import { ContactDetailView } from '@/components/contacts/contact-detail-view';
 import { ImportModal } from '@/components/contacts/import-modal';
 import { CustomFieldsManager } from '@/components/contacts/custom-fields-manager';
 import { useCan } from '@/hooks/use-can';
+import { MobileActionBar } from '@/components/layout/mobile-action-bar'
 import { GatedButton } from '@/components/ui/gated-button';
 import { useTranslations } from 'next-intl';
 import {
@@ -369,16 +370,17 @@ export default function ContactsPage() {
             {totalCount > 0 ? t('subtitle', { count: totalCount }) : t('subtitleZero')}
           </p>
         </div>
-        {/* No celular os botões rolam na horizontal em vez de quebrar a tela. */}
-        <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden [&>*]:shrink-0">
+        {/* Mobile: "Campos personalizados" e "Importar" dividem a largura;
+            "Adicionar contato" fica fixo na base (MobileActionBar). */}
+        <div className="flex items-center gap-2 [&>*]:min-w-0 [&>*]:flex-1 sm:[&>*]:flex-none">
           {canEditSettings && (
             <Button
               variant="outline"
               onClick={() => setCustomFieldsOpen(true)}
-              className="border-border text-muted-foreground hover:bg-muted"
+              className="w-full border-border text-muted-foreground hover:bg-muted sm:w-auto"
             >
               <SlidersHorizontal className="size-4" />
-              {t('customFieldsBtn')}
+              <span className="truncate">{t('customFieldsBtn')}</span>
             </Button>
           )}
           <GatedButton
@@ -386,7 +388,7 @@ export default function ContactsPage() {
             canAct={canEdit}
             gateReason={tGate('reasons.addOrImportContacts')}
             onClick={() => setImportOpen(true)}
-            className="border-border text-muted-foreground hover:bg-muted"
+            className="w-full border-border text-muted-foreground hover:bg-muted sm:w-auto"
           >
             <Upload className="size-4" />
             {t('importBtn')}
@@ -395,6 +397,7 @@ export default function ContactsPage() {
             canAct={canEdit}
             gateReason={tGate('reasons.addOrImportContacts')}
             onClick={openAddForm}
+            wrapperClassName="hidden sm:inline-flex"
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Plus className="size-4" />
@@ -402,6 +405,17 @@ export default function ContactsPage() {
           </GatedButton>
         </div>
       </div>
+
+      <MobileActionBar>
+        <GatedButton
+          canAct={canEdit}
+          gateReason={tGate('reasons.addOrImportContacts')}
+          onClick={openAddForm}
+        >
+          <Plus className="size-4" />
+          {t('addContactBtn')}
+        </GatedButton>
+      </MobileActionBar>
 
       {/* Search + tag filter */}
       <div className="space-y-2">
