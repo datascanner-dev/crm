@@ -11,7 +11,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CheckCircle, MailCheck, UsersRound } from "lucide-react";
 
 // `useSearchParams` opts the component out of static prerendering
 // unless wrapped in Suspense — same pattern as /login.
@@ -105,15 +104,10 @@ function SignupPageInner() {
         description={t.rich("checkEmailDesc", {
           email,
           strong: (chunks) => (
-            <span className="font-semibold">{chunks}</span>
+            <span className="text-foreground">{chunks}</span>
           ),
         })}
-        icon={<CheckCircle className="size-6 text-primary" />}
       >
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-border bg-muted px-4 py-3 text-sm text-muted-foreground sm:hidden">
-          <MailCheck className="size-5 shrink-0 text-primary" aria-hidden="true" />
-          <span className="min-w-0 truncate text-foreground">{email}</span>
-        </div>
         <Button
           variant="outline"
           className="h-12 w-full border-border text-base text-foreground hover:bg-muted"
@@ -130,17 +124,6 @@ function SignupPageInner() {
     <AuthShell
       title={inviteToken ? t("titleJoin") : t("title")}
       description={inviteToken ? t("descJoin") : t("desc")}
-      badge={
-        inviteToken ? (
-          <>
-            <UsersRound className="size-4" aria-hidden="true" />
-            {t("inviteBadge")}
-          </>
-        ) : undefined
-      }
-      icon={
-        inviteToken ? <UsersRound className="size-6 text-primary" /> : undefined
-      }
       footer={
         <>
           {t("haveAccount")}{" "}
