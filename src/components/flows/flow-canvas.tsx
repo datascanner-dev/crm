@@ -620,7 +620,7 @@ function NodeEditSheet({
   if (!node) {
     return (
       <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
-        <SheetContent side="right" className="w-full sm:max-w-md" />
+        <SheetContent side="right" className="w-full data-[side=right]:sm:max-w-[35rem]" />
       </Sheet>
     );
   }
@@ -630,7 +630,7 @@ function NodeEditSheet({
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         side="right"
-        className="border-border bg-popover flex w-full flex-col gap-0 border-l p-0 sm:max-w-md"
+        className="border-border bg-popover flex w-full flex-col gap-0 border-l p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[35rem]"
       >
         <SheetHeader className="border-border flex-row items-center gap-3 space-y-0 border-b px-5 py-4">
           <NodeIconChip type={node.node_type} size={36} iconSize={18} />
@@ -663,15 +663,14 @@ function NodeEditSheet({
 
         <SheetFooter className="border-border border-t px-5 py-3 sm:flex-row sm:justify-between">
           {!isEntry ? (
-            <Button variant="ghost" size="sm" onClick={onSetEntry}>
+            <Button variant="outline" onClick={onSetEntry}>
               {t('setAsEntry')}
             </Button>
           ) : (
             <span />
           )}
           <Button
-            variant="ghost"
-            size="sm"
+            variant="outline"
             onClick={onDelete}
             className="text-red-400 hover:bg-red-500/10 hover:text-red-300"
           >
