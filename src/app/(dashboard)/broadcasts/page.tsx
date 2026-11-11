@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/table';
 import { Radio, Plus, Loader2 } from 'lucide-react';
 import { useCan } from '@/hooks/use-can';
+import { MobileActionBar } from '@/components/layout/mobile-action-bar'
 import { GatedButton } from '@/components/ui/gated-button';
 import { getBroadcastStatus } from '@/lib/broadcast-status';
 import { useTranslations } from 'next-intl';
@@ -182,7 +183,7 @@ export default function BroadcastsPage() {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -193,6 +194,7 @@ export default function BroadcastsPage() {
           canAct={canCreate}
           gateReason={tGate('reasons.createBroadcasts')}
           onClick={() => router.push('/broadcasts/new')}
+          wrapperClassName="hidden sm:inline-flex"
           className="bg-primary text-primary-foreground hover:bg-primary/90"
         >
           <Plus className="h-4 w-4" />
@@ -200,8 +202,19 @@ export default function BroadcastsPage() {
         </GatedButton>
       </div>
 
+      <MobileActionBar>
+        <GatedButton
+          canAct={canCreate}
+          gateReason={tGate('reasons.createBroadcasts')}
+          onClick={() => router.push('/broadcasts/new')}
+        >
+          <Plus className="h-4 w-4" />
+          {t('newBroadcast')}
+        </GatedButton>
+      </MobileActionBar>
+
       {broadcasts.length === 0 ? (
-        <div className="flex h-64 flex-col items-center justify-center rounded-xl border border-border bg-card">
+        <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-border bg-card p-8 text-center">
           <Radio className="mb-3 h-10 w-10 text-muted-foreground" />
           <p className="text-sm font-medium text-foreground">{t('noBroadcastsYet')}</p>
           <p className="mt-1 text-xs text-muted-foreground">
