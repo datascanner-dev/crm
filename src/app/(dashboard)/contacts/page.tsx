@@ -671,6 +671,7 @@ export default function ContactsPage() {
                           <Button
                             variant="ghost"
                             size="icon-sm"
+                            aria-label="Mais ações"
                             className="text-muted-foreground hover:text-foreground"
                             onClick={(e) => e.stopPropagation()}
                           />
@@ -727,6 +728,7 @@ export default function ContactsPage() {
             <Button
               variant="outline"
               size="icon-sm"
+              aria-label="Página anterior"
               disabled={!hasPrev}
               onClick={() => setPage((p) => p - 1)}
               className="border-border text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-30"
@@ -740,6 +742,7 @@ export default function ContactsPage() {
               variant="outline"
               size="icon-sm"
               disabled={!hasNext}
+              aria-label="Próxima página"
               onClick={() => setPage((p) => p + 1)}
               className="border-border text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-30"
             >
