@@ -289,8 +289,14 @@ export function AiConfig() {
                   value={provider}
                   onValueChange={(v) => handleProviderChange(v as AiProvider)}
                   disabled={disabled}
+                  // Mostra o nome do provedor no gatilho, não o código interno.
+                  items={{
+                    openai: PROVIDER_LABEL.openai,
+                    anthropic: PROVIDER_LABEL.anthropic,
+                    openai_compatible: t('providerOpenAiCompatible'),
+                  }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full sm:w-fit">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -502,8 +508,13 @@ export function AiConfig() {
                   setHandoffAgentId(!v || v === HANDOFF_QUEUE ? '' : v)
                 }
                 disabled={disabled || !autoReplyEnabled}
+                // Mostra "Fila compartilhada" / nome do agente, não "__queue__" / id.
+                items={{
+                  [HANDOFF_QUEUE]: t('handoffQueue'),
+                  ...Object.fromEntries(members.map((m) => [m.user_id, memberLabel(m)])),
+                }}
               >
-                <SelectTrigger id="ai-handoff">
+                <SelectTrigger id="ai-handoff" className="w-full sm:w-fit">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
