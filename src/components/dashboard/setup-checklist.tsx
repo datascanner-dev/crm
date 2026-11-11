@@ -54,7 +54,7 @@ export function SetupChecklist({ setup }: { setup: OverviewSetup }) {
                 {!s.done ? (
                   <Link
                     href={s.href}
-                    className={buttonVariants({ variant: s.id === nextId ? 'default' : 'outline', size: 'sm' })}
+                    className={buttonVariants({ variant: s.id === nextId ? 'default' : 'outline' })}
                   >
                     {t(`steps.${s.id}.action`)}
                   </Link>
@@ -68,7 +68,7 @@ export function SetupChecklist({ setup }: { setup: OverviewSetup }) {
         <CardContent className="py-8 text-center">
           <p className="text-sm font-semibold text-foreground">{t('previewTitle')}</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">{t('previewHint')}</p>
-          <Link href="/inbox" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'mt-4')}>
+          <Link href="/inbox" className={cn(buttonVariants({ variant: 'outline' }), 'mt-6')}>
             {t('previewAction')}
           </Link>
         </CardContent>

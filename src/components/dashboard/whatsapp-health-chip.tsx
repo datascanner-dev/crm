@@ -55,7 +55,7 @@ export function WhatsAppHealthChip() {
     <Link
       href="/settings?tab=whatsapp"
       title={t('title')}
-      className="inline-flex h-8 max-w-full items-center gap-2 rounded-lg border border-border bg-card px-2.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      className="inline-flex h-12 max-w-full items-center gap-2 rounded-lg border border-border bg-card px-4 text-sm shadow-xs hover:bg-accent text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
     >
       <span className={cn('size-2 shrink-0 rounded-full', dot)} aria-hidden />
       <span className="truncate">{label}</span>

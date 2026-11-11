@@ -89,16 +89,16 @@ export function OverviewHeader({
       <div className="flex flex-wrap items-center gap-2">
         <WhatsAppHealthChip />
         <Tabs value={String(range)} onValueChange={(v) => onRangeChange(Number(v) as OverviewRange)}>
-          <TabsList aria-label={t('rangeLabel')}>
+          <TabsList aria-label={t('rangeLabel')} className="group-data-horizontal/tabs:h-12">
             {OVERVIEW_RANGES.map((r) => (
-              <TabsTrigger key={r} value={String(r)} className="px-2.5 text-xs">
+              <TabsTrigger key={r} value={String(r)} className="px-3 text-sm">
                 {t(`range.${r}`)}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
         <DropdownMenu>
-          <DropdownMenuTrigger className={buttonVariants({ size: 'sm' })}>
+          <DropdownMenuTrigger className={buttonVariants()}>
             <Plus aria-hidden />
             {t('new')}
             <ChevronDown className="opacity-70" aria-hidden />
