@@ -37,7 +37,9 @@ export function useUnreadNotifications(): number {
     void loadCount();
 
     const channel = supabase
-      .channel(`notifications-unread-count:${accountId}`)
+      // Nome único por instância: o hook roda no menu lateral e no sino
+      // do mobile, e o supabase-js reaproveita canais com o mesmo nome.
+      .channel(`notifications-unread-count:${accountId}:${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
         {
