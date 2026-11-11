@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { useCan } from "@/hooks/use-can";
 import { CURRENCIES } from "@/lib/currency";
 import { contactSearchFilter } from "@/lib/contacts/search-filter";
 import {
@@ -62,7 +63,13 @@ export function DealForm({
 }: DealFormProps) {
   const t = useTranslations("Pipelines.form");
   const supabase = createClient();
-  const { accountId, defaultCurrency } = useAuth();
+  const { accountId, defaultCurrency, profile } = useAuth();
+  // Agente: só assume para si um negócio sem responsável; reatribuir
+  // e excluir são de Proprietário/Administrador (migration 060).
+  const canReassign = useCan("reassign");
+  const canDelete = useCan("delete-records");
+  const initialAssignee = deal?.assigned_to ?? "";
+  const assigneeLocked = !canReassign && initialAssignee !== "";
 
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
@@ -471,15 +478,29 @@ export function DealForm({
               <select
                 value={assignedTo}
                 onChange={(e) => setAssignedTo(e.target.value)}
-                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary"
+                disabled={assigneeLocked}
+                title={assigneeLocked ? t("reassignAdminOnly") : undefined}
+                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <option value="">{t("unassigned")}</option>
-                {profiles.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.full_name || p.email}
-                  </option>
-                ))}
+                {profiles
+                  .filter(
+                    (p) =>
+                      canReassign ||
+                      p.id === profile?.id ||
+                      p.id === initialAssignee,
+                  )
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.full_name || p.email}
+                    </option>
+                  ))}
               </select>
+              {!canReassign && (
+                <p className="text-xs text-muted-foreground">
+                  {t("reassignAdminOnly")}
+                </p>
+              )}
             </div>
 
             <div className="grid gap-2">
@@ -601,7 +622,7 @@ export function DealForm({
               </Button>
             </div>
 
-            {deal &&
+            {deal && canDelete &&
               (confirmDelete ? (
                 <div className="mt-3 flex items-center justify-between gap-2 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs">
                   <span className="text-red-300">{t("deletePrompt")}</span>
