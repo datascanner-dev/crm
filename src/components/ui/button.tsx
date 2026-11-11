@@ -41,7 +41,7 @@ const buttonVariants = cva(
         variant: ["default", "outline", "secondary", "destructive"],
         size: ["default", "lg"],
         className:
-          "h-12 gap-2 px-5 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
+          "h-12 gap-2 rounded-[12px] px-5 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
       },
     ],
     defaultVariants: {

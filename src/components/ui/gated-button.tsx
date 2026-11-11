@@ -63,6 +63,8 @@ interface GatedButtonProps extends Omit<ComponentProps<typeof Button>, "title"> 
   gateReason?: string;
   /** Optional fallback title for the non-gated case. */
   title?: string;
+  /** Extra classes for the wrapping span (e.g. `hidden sm:inline-flex`). */
+  wrapperClassName?: string;
   children?: ReactNode;
 }
 
@@ -70,6 +72,7 @@ export function GatedButton({
   canAct = true,
   gateReason,
   title,
+  wrapperClassName,
   disabled,
   className,
   children,
@@ -88,7 +91,7 @@ export function GatedButton({
       // here (not on the button) is what makes the tooltip work
       // in Safari / older Firefox — those browsers don't fire
       // mouseover on disabled buttons.
-      className={cn("inline-flex", !canAct && "cursor-not-allowed")}
+      className={cn("inline-flex", !canAct && "cursor-not-allowed", wrapperClassName)}
       title={tooltip}
     >
       <Button
