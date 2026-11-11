@@ -118,6 +118,8 @@ export interface Contact {
   name?: string;
   email?: string;
   company?: string;
+  /** Embutido no quadro de Funis (valor dos campos personalizados). */
+  custom_values?: { value: string | null; field?: { field_name: string } | null }[];
   avatar_url?: string;
   created_at: string;
   updated_at: string;
