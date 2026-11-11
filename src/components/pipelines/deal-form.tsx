@@ -10,9 +10,11 @@ import {
   CONTACT_PICKER_LIMIT,
   withSelectedContact,
 } from "@/lib/contacts/contact-picker";
+import { planCustomValueWrites } from "@/lib/contacts/custom-value-writes";
 import type {
   Contact,
   Conversation,
+  CustomField,
   Deal,
   DealStatus,
   PipelineStage,
@@ -78,6 +80,17 @@ export function DealForm({
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [linkedConversation, setLinkedConversation] =
     useState<Conversation | null>(null);
+
+  // Campos personalizados do contato (ex.: dados da landing page —
+  // empresa, CNPJ, UTMs), editáveis aqui e salvos junto com o negócio.
+  const [customFields, setCustomFields] = useState<CustomField[]>([]);
+  const [customValues, setCustomValues] = useState<Record<string, string>>({});
+  const [initialCustomValues, setInitialCustomValues] = useState<
+    Record<string, string>
+  >({});
+  // Contato a que os valores carregados pertencem — evita mostrar ou
+  // gravar valores de um contato anterior enquanto o novo carrega.
+  const [customFor, setCustomFor] = useState("");
 
   const [saving, setSaving] = useState(false);
   const [statusAction, setStatusAction] = useState<DealStatus | null>(null);
@@ -182,6 +195,63 @@ export function DealForm({
     };
   }, [open, contactId, supabase]);
 
+  useEffect(() => {
+    if (!open || !contactId) return;
+    let cancelled = false;
+    (async () => {
+      const [fieldsRes, valuesRes] = await Promise.all([
+        supabase.from("custom_fields").select("*").order("field_name"),
+        supabase
+          .from("contact_custom_values")
+          .select("custom_field_id, value")
+          .eq("contact_id", contactId),
+      ]);
+      if (cancelled) return;
+      const fields = (fieldsRes.data ?? []) as CustomField[];
+      const map: Record<string, string> = {};
+      for (const f of fields) map[f.id] = "";
+      for (const v of (valuesRes.data ?? []) as {
+        custom_field_id: string;
+        value: string | null;
+      }[]) {
+        map[v.custom_field_id] = v.value ?? "";
+      }
+      setCustomFields(fields);
+      setCustomValues(map);
+      setInitialCustomValues(map);
+      setCustomFor(contactId);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, contactId, supabase]);
+
+  /** Grava só os campos personalizados que mudaram. */
+  async function saveCustomValues(): Promise<boolean> {
+    if (!contactId || customFor !== contactId) return true;
+    const changed: Record<string, string> = {};
+    for (const [id, v] of Object.entries(customValues)) {
+      if ((initialCustomValues[id] ?? "").trim() !== v.trim()) changed[id] = v;
+    }
+    if (Object.keys(changed).length === 0) return true;
+    const { upserts, clearedFieldIds } = planCustomValueWrites(contactId, changed);
+    if (upserts.length > 0) {
+      const { error } = await supabase
+        .from("contact_custom_values")
+        .upsert(upserts, { onConflict: "contact_id,custom_field_id" });
+      if (error) return false;
+    }
+    if (clearedFieldIds.length > 0) {
+      const { error } = await supabase
+        .from("contact_custom_values")
+        .delete()
+        .eq("contact_id", contactId)
+        .in("custom_field_id", clearedFieldIds);
+      if (error) return false;
+    }
+    return true;
+  }
+
   async function handleSave() {
     if (!title.trim() || !contactId || !stageId) {
       toast.error(t("toastRequired"));
@@ -236,6 +306,10 @@ export function DealForm({
       }
     }
 
+    if (!(await saveCustomValues())) {
+      toast.error(t("toastCustomFieldsFailed"));
+    }
+
     setSaving(false);
     toast.success(deal ? t("toastUpdated") : t("toastCreated"));
     onOpenChange(false);
@@ -280,7 +354,7 @@ export function DealForm({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="bg-popover border-border text-popover-foreground sm:max-w-lg w-full p-0"
+        className="w-full max-w-none border-border bg-popover p-0 text-popover-foreground data-[side=right]:w-full sm:data-[side=right]:max-w-xl"
       >
         <div className="flex h-full flex-col">
           <SheetHeader className="border-b border-border/50 p-4">
@@ -418,39 +492,78 @@ export function DealForm({
               />
             </div>
 
+            {contactId && customFor === contactId && customFields.length > 0 && (
+              <div className="space-y-3 rounded-[12px] border border-border p-4">
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {t("leadData")}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {t("leadDataHint")}
+                  </p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {customFields.map((f) => (
+                    <div key={f.id} className="grid gap-1.5">
+                      <Label
+                        htmlFor={`deal-cf-${f.id}`}
+                        className="text-muted-foreground"
+                      >
+                        {f.field_name}
+                      </Label>
+                      <Input
+                        id={`deal-cf-${f.id}`}
+                        value={customValues[f.id] ?? ""}
+                        onChange={(e) =>
+                          setCustomValues((prev) => ({
+                            ...prev,
+                            [f.id]: e.target.value,
+                          }))
+                        }
+                        className="border-border bg-muted text-foreground"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {deal && (
-              <div className="space-y-2 rounded-lg border border-border bg-muted/50 p-3">
+              <div className="space-y-3 rounded-[12px] border border-border bg-muted/50 p-4">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("status")}
                 </p>
-                <div className="flex gap-2">
+                {/* Secundários: neutros, empilhados no mobile para o texto não quebrar o layout. */}
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <Button
                     type="button"
+                    variant="outline"
                     onClick={() => handleStatusChange("won")}
                     disabled={!!statusAction || deal.status === "won"}
-                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                    className="w-full min-w-0"
                   >
                     {statusAction === "won" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        <Check className="mr-1 h-4 w-4" />
-                        {t("markAsWon")}
+                        <Check className="h-4 w-4 text-status-good" />
+                        <span className="truncate">{t("markAsWon")}</span>
                       </>
                     )}
                   </Button>
                   <Button
                     type="button"
+                    variant="outline"
                     onClick={() => handleStatusChange("lost")}
                     disabled={!!statusAction || deal.status === "lost"}
-                    className="flex-1 bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
+                    className="w-full min-w-0"
                   >
                     {statusAction === "lost" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        <X className="mr-1 h-4 w-4" />
-                        {t("markAsLost")}
+                        <X className="h-4 w-4 text-destructive" />
+                        <span className="truncate">{t("markAsLost")}</span>
                       </>
                     )}
                   </Button>
