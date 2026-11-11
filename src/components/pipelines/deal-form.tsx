@@ -354,7 +354,7 @@ export function DealForm({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-full max-w-none border-border bg-popover p-0 text-popover-foreground data-[side=right]:w-full data-[side=right]:sm:max-w-[45rem]"
+        className="w-full max-w-none border-border bg-popover p-0 text-popover-foreground data-[side=right]:w-full data-[side=right]:sm:max-w-[30rem]"
       >
         <div className="flex h-full flex-col">
           <SheetHeader className="border-b border-border/50 p-4">
