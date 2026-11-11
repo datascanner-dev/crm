@@ -7,6 +7,7 @@ import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { ThemedToaster } from "@/components/themed-toaster";
+import { PwaInstallPrompt } from "@/components/pwa/pwa-install-prompt";
 import {
   DEFAULT_MODE,
   DEFAULT_THEME,
@@ -40,6 +41,14 @@ const metadata: Metadata = {
   },
   icons: {
     icon: [{ url: "/icon" }],
+  },
+  applicationName: "Data Scanner CRM",
+  // PWA on iOS: standalone launch + home-screen title. The manifest
+  // (src/app/manifest.ts) covers Chromium.
+  appleWebApp: {
+    capable: true,
+    title: "Data Scanner",
+    statusBarStyle: "default",
   },
   formatDetection: {
     email: false,
@@ -120,6 +129,7 @@ export default async function RootLayout({
           <ThemeProvider>
             {children}
             <ThemedToaster />
+            <PwaInstallPrompt />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
