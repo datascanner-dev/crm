@@ -999,7 +999,7 @@ export function TemplateManager() {
                             changeButtonType(i, val as TemplateButton['type']);
                           }}
                         >
-                          <SelectTrigger className="w-40 bg-muted border-border text-foreground h-8 text-xs">
+                          <SelectTrigger className="w-48 bg-muted border-border text-foreground">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-popover border-border">
