@@ -1,9 +1,10 @@
 "use client";
 
+import { SidebarToggleIcon } from "@/components/icons/sidebar-toggle-icon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import { LogOut, Menu, Settings as SettingsIcon, User } from "lucide-react";
+import { LogOut, Settings as SettingsIcon, User } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -57,7 +58,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
     "U";
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-background px-4 lg:px-6">
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:px-6">
       <div className="flex min-w-0 items-center gap-2">
         {/* Hamburger — mobile only. 44×44 hit target per Apple HIG. */}
         <button
@@ -66,7 +67,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           aria-label={t("openMenu")}
           className="-ml-2 flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:hidden"
         >
-          <Menu className="h-5 w-5" />
+          <SidebarToggleIcon />
         </button>
         <h1 className="truncate text-base font-semibold text-foreground sm:text-lg">
           {t(titleKey as string)}

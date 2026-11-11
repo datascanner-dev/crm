@@ -15,8 +15,6 @@ import {
   LayoutDashboard,
   LogOut,
   MessageSquare,
-  PanelLeftClose,
-  PanelLeftOpen,
   Radio,
   Settings,
   Shield,
@@ -115,6 +113,7 @@ interface SidebarProps {
 
 import { useTranslations } from "next-intl";
 import { BrandMark } from "@/components/brand/brand-mark";
+import { SidebarToggleIcon } from "@/components/icons/sidebar-toggle-icon";
 
 const SIDEBAR_KEY = "dscrm.sidebar";
 
@@ -352,11 +351,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               collapsed && "justify-center px-0",
             )}
           >
-            {collapsed ? (
-              <PanelLeftOpen className="h-4 w-4 shrink-0" />
-            ) : (
-              <PanelLeftClose className="h-4 w-4 shrink-0" />
-            )}
+            <SidebarToggleIcon />
             <span className={cn("truncate", collapsed && "sr-only")}>
               {collapsed ? t("expandMenu") : t("collapseMenu")}
             </span>
