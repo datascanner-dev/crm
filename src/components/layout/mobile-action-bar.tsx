@@ -8,8 +8,10 @@ import { cn } from "@/lib/utils";
 // ponta. Os botões dentro dela ocupam a largura toda — um botão sozinho
 // fica com 100%, dois dividem 50/50.
 //
-// Renderiza também um espaçador no fluxo da página para o último item da
-// lista não ficar escondido atrás da barra.
+// O espaço no fim da página para o último item não ficar atrás da barra
+// vem do <main> (dashboard-shell: has-[[data-slot=mobile-action-bar]]),
+// não de um espaçador no fluxo — um espaçador no meio da página criava
+// um vão grande entre o cabeçalho e o conteúdo.
 //
 // `!m-0`: a barra costuma ficar dentro de um `space-y-*`, que aplica
 // margin-bottom em todo filho menos o último. Num elemento fixed com
@@ -18,17 +20,12 @@ import { cn } from "@/lib/utils";
 export function MobileActionBar({
   children,
   className,
-  spacer = true,
 }: {
   children: ReactNode;
   className?: string;
-  /** false quando a barra fica dentro de um cabeçalho flex: aí o
-   *  espaçador vai no fim da página (MobileActionBarSpacer). */
-  spacer?: boolean;
 }) {
   return (
     <>
-      {spacer && <MobileActionBarSpacer />}
       <div
         data-slot="mobile-action-bar"
         className={cn(
@@ -43,7 +40,3 @@ export function MobileActionBar({
   );
 }
 
-/** Espaço no fim da página para o conteúdo não ficar atrás da barra. */
-export function MobileActionBarSpacer() {
-  return <div aria-hidden="true" className="h-20 sm:hidden" />;
-}
