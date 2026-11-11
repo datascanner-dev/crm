@@ -316,3 +316,20 @@ html[data-theme="rose"] {
     scroll-behavior: auto !important;
   }
 }
+
+/* Campos de formulário consistentes em todo o app: várias telas passam
+ * classes próprias (ex.: "border-border bg-muted") que deixavam a borda
+ * abaixo de 3:1. Aqui o padrão vence essas sobrescritas. */
+:is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"]) {
+  background-color: var(--control) !important;
+  border-color: var(--input) !important;
+}
+:is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"]):focus-visible {
+  border-color: color-mix(in oklch, var(--focus) 60%, transparent) !important;
+}
+:is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"])[aria-invalid="true"] {
+  border-color: var(--destructive) !important;
+}
+:is([data-slot="input"], [data-slot="textarea"]):disabled {
+  background-color: var(--muted) !important;
+}
