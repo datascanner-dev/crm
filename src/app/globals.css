@@ -2,7 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* O app troca o modo por html[data-mode], não pela classe .dark. */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 
 @theme inline {
   --color-background: var(--background);
@@ -114,7 +115,8 @@ html[data-mode="dark"] {
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.32 0 0);
-  --input: oklch(0.32 0 0);
+  /* Borda de campos com 3:1 sobre o fundo (WCAG 1.4.11). */
+  --input: oklch(0.5 0 0);
   --control: oklch(0.205 0 0);
   --hairline: oklch(0.269 0 0);
   --focus: oklch(0.935 0 0);
@@ -150,7 +152,8 @@ html[data-mode="light"] {
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.145 0 0 / 0.1);
-  --input: oklch(0.145 0 0 / 0.12);
+  /* Borda de campos com 3:1 sobre o branco (WCAG 1.4.11). */
+  --input: oklch(0.66 0 0);
   --control: oklch(1 0 0);
   --hairline: oklch(0.935 0 0);
   --focus: oklch(0.15 0 0);
@@ -175,17 +178,20 @@ html[data-mode="light"] {
 /* Padrão: laranja Data Scanner (#ff4602). */
 :root,
 html[data-theme="datascanner"] {
-  --primary: oklch(0.661 0.229 35.5);
+  /* Laranja um pouco mais escuro que o #ff4602 da marca para o texto
+   * branco dos botões passar no contraste AA (4,7:1). O símbolo da
+   * marca continua no tom original. */
+  --primary: oklch(0.58 0.21 35.5);
   --primary-foreground: oklch(1 0 0);
-  --primary-hover: oklch(0.7 0.21 35.5);
-  --primary-ring: oklch(0.56 0.2 35.5);
-  --primary-soft: oklch(0.661 0.229 35.5 / 0.12);
-  --primary-soft-2: oklch(0.661 0.229 35.5 / 0.2);
-  --ring: oklch(0.661 0.229 35.5);
+  --primary-hover: oklch(0.54 0.2 35.5);
+  --primary-ring: oklch(0.5 0.19 35.5);
+  --primary-soft: oklch(0.58 0.21 35.5 / 0.12);
+  --primary-soft-2: oklch(0.58 0.21 35.5 / 0.2);
+  --ring: oklch(0.58 0.21 35.5);
   --chart-1: oklch(0.661 0.229 35.5);
-  --sidebar-primary: oklch(0.661 0.229 35.5);
+  --sidebar-primary: oklch(0.58 0.21 35.5);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-ring: oklch(0.661 0.229 35.5);
+  --sidebar-ring: oklch(0.58 0.21 35.5);
 }
 
 html[data-theme="violet"] {
@@ -269,5 +275,44 @@ html[data-theme="rose"] {
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ============================================================
+ * ACESSIBILIDADE (WCAG 2.2 AA)
+ * Muitos avisos e etiquetas usam tons claros (ex.: amber-300) pensados
+ * para o modo escuro. No modo claro eles ficam ilegíveis (≈1,5:1), então
+ * aqui eles são trocados pelo tom 700/800 da mesma cor (≥4,5:1).
+ * ============================================================ */
+@layer utilities {
+  html[data-mode="light"] :is(.text-amber-100, .hover\:text-amber-100:hover, .text-amber-200, .hover\:text-amber-200:hover, .text-amber-300, .hover\:text-amber-300:hover, .text-amber-400, .hover\:text-amber-400:hover, .text-amber-500, .hover\:text-amber-500:hover, .text-amber-600) { color: oklch(47.3% .137 46.201); }
+  html[data-mode="light"] :is(.text-yellow-100, .hover\:text-yellow-100:hover, .text-yellow-200, .hover\:text-yellow-200:hover, .text-yellow-300, .hover\:text-yellow-300:hover, .text-yellow-400, .hover\:text-yellow-400:hover, .text-yellow-500, .hover\:text-yellow-500:hover) { color: oklch(47.6% .114 61.907); }
+  html[data-mode="light"] :is(.text-red-100, .hover\:text-red-100:hover, .text-red-200, .hover\:text-red-200:hover, .text-red-300, .hover\:text-red-300:hover, .text-red-400, .hover\:text-red-400:hover, .text-red-500, .hover\:text-red-500:hover) { color: oklch(50.5% .213 27.518); }
+  html[data-mode="light"] :is(.text-emerald-100, .hover\:text-emerald-100:hover, .text-emerald-200, .hover\:text-emerald-200:hover, .text-emerald-300, .hover\:text-emerald-300:hover, .text-emerald-400, .hover\:text-emerald-400:hover, .text-emerald-500, .hover\:text-emerald-500:hover) { color: oklch(50.8% .118 165.612); }
+  html[data-mode="light"] :is(.text-green-100, .hover\:text-green-100:hover, .text-green-200, .hover\:text-green-200:hover, .text-green-300, .hover\:text-green-300:hover, .text-green-400, .hover\:text-green-400:hover, .text-green-500, .hover\:text-green-500:hover) { color: oklch(52.7% .154 150.069); }
+  html[data-mode="light"] :is(.text-blue-100, .hover\:text-blue-100:hover, .text-blue-200, .hover\:text-blue-200:hover, .text-blue-300, .hover\:text-blue-300:hover, .text-blue-400, .hover\:text-blue-400:hover, .text-blue-500, .hover\:text-blue-500:hover) { color: oklch(48.8% .243 264.376); }
+  html[data-mode="light"] :is(.text-sky-100, .hover\:text-sky-100:hover, .text-sky-200, .hover\:text-sky-200:hover, .text-sky-300, .hover\:text-sky-300:hover, .text-sky-400, .hover\:text-sky-400:hover, .text-sky-500, .hover\:text-sky-500:hover) { color: oklch(50% .134 242.749); }
+  html[data-mode="light"] :is(.text-cyan-100, .hover\:text-cyan-100:hover, .text-cyan-200, .hover\:text-cyan-200:hover, .text-cyan-300, .hover\:text-cyan-300:hover, .text-cyan-400, .hover\:text-cyan-400:hover, .text-cyan-500, .hover\:text-cyan-500:hover) { color: oklch(52% .105 223.128); }
+  html[data-mode="light"] :is(.text-teal-100, .hover\:text-teal-100:hover, .text-teal-200, .hover\:text-teal-200:hover, .text-teal-300, .hover\:text-teal-300:hover, .text-teal-400, .hover\:text-teal-400:hover, .text-teal-500, .hover\:text-teal-500:hover) { color: oklch(51.1% .096 186.391); }
+  html[data-mode="light"] :is(.text-indigo-100, .hover\:text-indigo-100:hover, .text-indigo-200, .hover\:text-indigo-200:hover, .text-indigo-300, .hover\:text-indigo-300:hover, .text-indigo-400, .hover\:text-indigo-400:hover, .text-indigo-500, .hover\:text-indigo-500:hover) { color: oklch(45.7% .24 277.023); }
+  html[data-mode="light"] :is(.text-purple-100, .hover\:text-purple-100:hover, .text-purple-200, .hover\:text-purple-200:hover, .text-purple-300, .hover\:text-purple-300:hover, .text-purple-400, .hover\:text-purple-400:hover, .text-purple-500, .hover\:text-purple-500:hover) { color: oklch(49.6% .265 301.924); }
+  html[data-mode="light"] :is(.text-fuchsia-100, .hover\:text-fuchsia-100:hover, .text-fuchsia-200, .hover\:text-fuchsia-200:hover, .text-fuchsia-300, .hover\:text-fuchsia-300:hover, .text-fuchsia-400, .hover\:text-fuchsia-400:hover, .text-fuchsia-500, .hover\:text-fuchsia-500:hover) { color: oklch(51.8% .253 323.949); }
+  html[data-mode="light"] :is(.text-pink-100, .hover\:text-pink-100:hover, .text-pink-200, .hover\:text-pink-200:hover, .text-pink-300, .hover\:text-pink-300:hover, .text-pink-400, .hover\:text-pink-400:hover, .text-pink-500, .hover\:text-pink-500:hover) { color: oklch(52.5% .223 3.958); }
+  html[data-mode="light"] :is(.text-rose-100, .hover\:text-rose-100:hover, .text-rose-200, .hover\:text-rose-200:hover, .text-rose-300, .hover\:text-rose-300:hover, .text-rose-400, .hover\:text-rose-400:hover, .text-rose-500, .hover\:text-rose-500:hover) { color: oklch(51.4% .222 16.935); }
+  html[data-mode="light"] :is(.text-orange-100, .hover\:text-orange-100:hover, .text-orange-200, .hover\:text-orange-200:hover, .text-orange-300, .hover\:text-orange-300:hover, .text-orange-400, .hover\:text-orange-400:hover, .text-orange-500, .hover\:text-orange-500:hover) { color: oklch(55.3% .195 38.402); }
+  html[data-mode="light"] :is(.text-lime-100, .hover\:text-lime-100:hover, .text-lime-200, .hover\:text-lime-200:hover, .text-lime-300, .hover\:text-lime-300:hover, .text-lime-400, .hover\:text-lime-400:hover, .text-lime-500, .hover\:text-lime-500:hover) { color: oklch(45.3% .124 130.933); }
+  html[data-mode="light"] :is(.text-violet-100, .hover\:text-violet-100:hover, .text-violet-200, .hover\:text-violet-200:hover, .text-violet-300, .hover\:text-violet-300:hover, .text-violet-400, .hover\:text-violet-400:hover, .text-violet-500, .hover\:text-violet-500:hover) { color: oklch(49.1% .27 292.581); }
+  /* Texto na cor primária sobre fundo escuro: tom mais claro (≥6:1). */
+  html[data-mode="dark"] :is(.text-primary, .hover\:text-primary:hover) {
+    color: oklch(0.72 0.17 40);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
