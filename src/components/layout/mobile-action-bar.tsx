@@ -18,13 +18,17 @@ import { cn } from "@/lib/utils";
 export function MobileActionBar({
   children,
   className,
+  spacer = true,
 }: {
   children: ReactNode;
   className?: string;
+  /** false quando a barra fica dentro de um cabeçalho flex: aí o
+   *  espaçador vai no fim da página (MobileActionBarSpacer). */
+  spacer?: boolean;
 }) {
   return (
     <>
-      <div aria-hidden="true" className="h-20 sm:hidden" />
+      {spacer && <MobileActionBarSpacer />}
       <div
         data-slot="mobile-action-bar"
         className={cn(
@@ -37,4 +41,9 @@ export function MobileActionBar({
       </div>
     </>
   );
+}
+
+/** Espaço no fim da página para o conteúdo não ficar atrás da barra. */
+export function MobileActionBarSpacer() {
+  return <div aria-hidden="true" className="h-20 sm:hidden" />;
 }
