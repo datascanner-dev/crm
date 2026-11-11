@@ -1,5 +1,6 @@
 'use client';
 
+import { APP_INTL_LOCALE } from "@/lib/intl-locale";
 import { useEffect, useState } from 'react';
 import { countAudience, type AudienceConfig } from '@/lib/broadcast-audience';
 import { createClient } from '@/lib/supabase/client';
@@ -110,7 +111,7 @@ export function Step4ScheduleSend({
               ) : (
                 <>
                   <Users className="h-3.5 w-3.5 text-primary" />
-                  <p className="font-medium text-foreground">{estimatedReach.toLocaleString()}</p>
+                  <p className="font-medium text-foreground">{estimatedReach.toLocaleString(APP_INTL_LOCALE)}</p>
                 </>
               )}
             </div>
