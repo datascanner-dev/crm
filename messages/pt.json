@@ -1780,7 +1780,7 @@
       "language": "Idioma",
       "langFixed": "O idioma é fixo depois que o modelo existe na Meta.",
       "categoryFixed": "A categoria de um modelo aprovado não pode ser alterada.",
-      "langHint": "Deve corresponder exatamente ao código na Meta — <code>en_US</code> e <code>en</code> são diferentes.",
+      "langHint": "Deve corresponder exatamente ao código na Meta — <code>pt_BR</code> e <code>pt_PT</code> são diferentes.",
       "header": "Cabeçalho",
       "headerNone": "Nenhum",
       "headerText": "Texto",
