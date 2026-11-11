@@ -61,7 +61,9 @@
     "defaultAvatar": "Foto",
     "menuProfile": "Perfil",
     "menuSettings": "Configurações",
-    "menuSignOut": "Sair"
+    "menuSignOut": "Sair",
+    "flows": "Fluxos",
+    "aiAgents": "Agentes de IA"
   },
   "ModeToggle": {
     "switchMode": "Mudar para o modo {mode}"
