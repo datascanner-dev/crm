@@ -15,6 +15,7 @@
 // away from the very page they need.
 // ============================================================
 
+import { authErrorMessage } from "@/lib/auth-error-message";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -74,7 +75,7 @@ export default function ResetPasswordPage() {
     setSaving(false);
 
     if (error) {
-      setError(error.message);
+      setError(authErrorMessage(error));
       return;
     }
     setStatus("done");
@@ -108,7 +109,7 @@ export default function ResetPasswordPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             <Link href="/forgot-password">
-              <Button className="h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button className="h-12 w-full bg-primary text-primary-foreground hover:bg-primary/90">
                 {t("requestNewLink")}
               </Button>
             </Link>
@@ -143,7 +144,7 @@ export default function ResetPasswordPage() {
           </CardHeader>
           <CardContent>
             <Button
-              className="h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              className="h-12 w-full bg-primary text-primary-foreground hover:bg-primary/90"
               onClick={() => {
                 // Full-page navigation, like /login: the middleware
                 // gating /dashboard must see the session cookies on a
@@ -216,7 +217,7 @@ export default function ResetPasswordPage() {
             <Button
               type="submit"
               disabled={saving}
-              className="mt-2 h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="mt-2 h-12 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
               {saving ? t("saving") : t("submit")}
             </Button>
