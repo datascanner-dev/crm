@@ -14,7 +14,8 @@
     "noAccount": "Don't have an account?",
     "createAccount": "Create account",
     "linkExpired": "That link has expired. For a password reset, use “Forgot password?” to request a new one; if you were confirming your email, sign up again.",
-    "linkInvalid": "That link couldn’t be used to sign you in. If you were confirming your email, it may already be verified — just sign in below. For a password reset, request a new link and open it in the same browser you requested it from."
+    "linkInvalid": "That link couldn’t be used to sign you in. If you were confirming your email, it may already be verified — just sign in below. For a password reset, request a new link and open it in the same browser you requested it from.",
+    "inviteBadge": "Team invite"
   },
   "Sidebar": {
     "title": "CRM Template for WhatsApp",
@@ -2252,7 +2253,8 @@
     "creating": "Creating account...",
     "submit": "Create account",
     "haveAccount": "Already have an account?",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "inviteBadge": "Team invite"
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "Check your email",
@@ -2936,5 +2938,20 @@
       "metaApiStatus": "Meta API error: {status}",
       "syncFailed": "Failed to sync templates"
     }
+  },
+  "AuthCommon": {
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "PwaInstall": {
+    "title": "Install Data Scanner CRM",
+    "desc": "Open your conversations in one tap, full screen, right from your home screen.",
+    "install": "Install app",
+    "notNow": "Not now",
+    "close": "Close install invite",
+    "iosIntro": "To install on iPhone:",
+    "iosStep1": "Tap <strong>Share</strong> in Safari's toolbar",
+    "iosStep2": "Choose <strong>Add to Home Screen</strong>",
+    "gotIt": "Got it"
   }
 }
