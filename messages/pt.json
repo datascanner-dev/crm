@@ -2256,7 +2256,7 @@
     "backToSignIn": "Voltar ao login",
     "titleJoin": "Criar conta e entrar na equipe",
     "title": "Criar conta",
-    "descJoin": "Confirme seu e-mail e depois aceite o convite para entrar na sua equipe.",
+    "descJoin": "Crie sua senha para entrar na sua equipe.",
     "desc": "Comece a usar o Data Scanner CRM",
     "fullNameLabel": "Nome completo",
     "fullNamePlaceholder": "João Silva",
@@ -2270,7 +2270,11 @@
     "submit": "Criar conta",
     "haveAccount": "Já tem uma conta?",
     "signIn": "Entrar",
-    "inviteBadge": "Convite para equipe"
+    "inviteBadge": "Convite para equipe",
+    "emailTaken": "Este e-mail já tem conta. Entre com ele para aceitar o convite.",
+    "inviteInvalid": "Este convite é inválido, já foi usado ou expirou. Peça um novo link.",
+    "tooManyAttempts": "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+    "signupFailed": "Não foi possível criar a conta. Tente de novo."
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "Verifique seu e-mail",

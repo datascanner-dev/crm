@@ -69,8 +69,10 @@ export async function POST(request: Request) {
     return null;
   });
 
-  if (!res || !res.ok) {
-    return NextResponse.json({ error: "send_failed" }, { status: 502 });
+  // Mesma resposta de sucesso mesmo se o n8n falhar: um 502 só para
+  // e-mails cadastrados revelaria quem tem conta. A falha fica no log.
+  if (res && !res.ok) {
+    console.error("[password-reset] webhook responded", res.status);
   }
   return NextResponse.json({ ok: true });
 }

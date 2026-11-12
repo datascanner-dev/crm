@@ -2256,7 +2256,7 @@
     "backToSignIn": "Back to sign in",
     "titleJoin": "Create account & join",
     "title": "Create account",
-    "descJoin": "Verify your email, then accept the invitation to join your team.",
+    "descJoin": "Create your password to join your team.",
     "desc": "Get started with CRM Template for WhatsApp",
     "fullNameLabel": "Full name",
     "fullNamePlaceholder": "John Doe",
@@ -2270,7 +2270,11 @@
     "submit": "Create account",
     "haveAccount": "Already have an account?",
     "signIn": "Sign in",
-    "inviteBadge": "Team invite"
+    "inviteBadge": "Team invite",
+    "emailTaken": "This email already has an account. Sign in with it to accept the invite.",
+    "inviteInvalid": "This invite is invalid, already used or expired. Ask for a new link.",
+    "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
+    "signupFailed": "Couldn't create the account. Please try again."
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "Check your email",

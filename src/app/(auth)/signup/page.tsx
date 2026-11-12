@@ -57,6 +57,53 @@ function SignupPageInner() {
 
     setLoading(true);
 
+    // With an invite, the account is created on the server: public
+    // sign-up is closed in Supabase Auth, so the browser can't call
+    // signUp. The route creates the user (already confirmed) and
+    // redeems the invite; then we sign in and go straight in.
+    if (inviteToken) {
+      const res = await fetch(
+        `/api/invitations/${encodeURIComponent(inviteToken)}/signup`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ full_name: fullName, email, password }),
+        },
+      ).catch(() => null);
+      const payload = (await res?.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!res || !res.ok || !payload?.ok) {
+        const code = res?.status === 429 ? "rate_limited" : payload?.error;
+        setError(
+          code === "email_taken"
+            ? t("emailTaken")
+            : code === "invite_invalid"
+              ? t("inviteInvalid")
+              : code === "rate_limited"
+                ? t("tooManyAttempts")
+                : t("signupFailed"),
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Full-page navigation, same as /login: the middleware must see
+      // the freshly written auth cookies (issue #365).
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) {
+        // Account exists and joined the team; just send them to login.
+        window.location.href = "/login";
+        return;
+      }
+      window.location.href = "/dashboard";
+      return;
+    }
+
     // Always name our own origin as the place the confirmation link
     // returns to. Previously this was left unset unless an invite was
     // involved, so Supabase fell back to its Site URL — which on a

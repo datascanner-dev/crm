@@ -2256,7 +2256,7 @@
     "backToSignIn": "로그인으로 돌아가기",
     "titleJoin": "계정 만들고 참여하기",
     "title": "계정 만들기",
-    "descJoin": "이메일을 인증한 뒤 초대를 수락해 팀에 참여하세요.",
+    "descJoin": "비밀번호를 만들어 팀에 참여하세요.",
     "desc": "WhatsApp용 CRM Template을 시작하세요",
     "fullNameLabel": "이름",
     "fullNamePlaceholder": "홍길동",
@@ -2270,7 +2270,11 @@
     "submit": "계정 만들기",
     "haveAccount": "이미 계정이 있으신가요?",
     "signIn": "로그인",
-    "inviteBadge": "팀 초대"
+    "inviteBadge": "팀 초대",
+    "emailTaken": "이미 계정이 있는 이메일입니다. 이 이메일로 로그인해 초대를 수락하세요.",
+    "inviteInvalid": "유효하지 않거나 이미 사용되었거나 만료된 초대입니다. 새 링크를 요청하세요.",
+    "tooManyAttempts": "시도 횟수가 너무 많습니다. 몇 분 후 다시 시도하세요.",
+    "signupFailed": "계정을 만들 수 없습니다. 다시 시도하세요."
   },
   "ForgotPasswordPage": {
     "checkEmailTitle": "이메일을 확인하세요",

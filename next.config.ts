@@ -6,10 +6,12 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 /**
  * Baseline security headers applied to every response.
  *
- * CSP ships as `Content-Security-Policy-Report-Only` so the browser
- * surfaces violations in the console without blocking anything — once
- * we have confidence nothing legit trips it (two deploys, a pass on
- * every route), flip the key to `Content-Security-Policy` to enforce.
+ * CSP is enforced (`Content-Security-Policy`). The Supabase origin is
+ * read from NEXT_PUBLIC_SUPABASE_URL at build time (it is a Docker
+ * build arg), so a self-hosted Supabase on its own domain works, not
+ * only `*.supabase.co`. Without that variable we can't know where the
+ * browser must connect, so the policy falls back to report-only
+ * instead of breaking the app.
  *
  * The rest of the headers are straight blocks, safe to enforce today:
  *   - HSTS: only meaningful on HTTPS (no-op on http://localhost).
@@ -19,6 +21,23 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
  *     deny them. A supply-chain compromise or a forgotten plugin
  *     can't silently opt back in.
  */
+function supabaseOrigins(): { https: string; wss: string } | null {
+  try {
+    const url = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "");
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return {
+      https: url.origin,
+      wss: `${url.protocol === "https:" ? "wss:" : "ws:"}//${url.host}`,
+    };
+  } catch {
+    return null;
+  }
+}
+
+const SUPABASE = supabaseOrigins();
+const SUPABASE_HTTP = ["https://*.supabase.co", SUPABASE?.https].filter(Boolean).join(" ");
+const SUPABASE_WS = ["wss://*.supabase.co", SUPABASE?.wss].filter(Boolean).join(" ");
+
 const SECURITY_HEADERS = [
   {
     key: "Strict-Transport-Security",
@@ -36,7 +55,7 @@ const SECURITY_HEADERS = [
     value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=()",
   },
   {
-    key: "Content-Security-Policy-Report-Only",
+    key: SUPABASE ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
     value: [
       "default-src 'self'",
       // Next.js needs 'unsafe-inline' for its inline hydration script
@@ -51,14 +70,15 @@ const SECURITY_HEADERS = [
       "img-src 'self' data: blob: https:",
       // Outbound media previews (blob: from MediaRecorder + file picker)
       // and Supabase public-bucket audio/video the inbox renders.
-      "media-src 'self' blob: https://*.supabase.co",
+      `media-src 'self' blob: ${SUPABASE_HTTP}`,
       "font-src 'self' data:",
       // Supabase REST + realtime (WSS). All Meta API calls happen
       // server-side, so graph.facebook.com does not belong here.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      `connect-src 'self' ${SUPABASE_HTTP} ${SUPABASE_WS}`,
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
+      "object-src 'none'",
     ].join("; "),
   },
 ] as const;
@@ -77,6 +97,8 @@ const nextConfig: NextConfig = {
   // Docker image can run without node_modules or the Next CLI.
   // Harmless outside Docker: `next start` keeps working as before.
   output: "standalone",
+  // Don't advertise the framework in an `X-Powered-By` header.
+  poweredByHeader: false,
   experimental: {
     turbopackPluginRuntimeStrategy: "workerThreads",
     cpus: 4,
