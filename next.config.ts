@@ -61,7 +61,9 @@ const SECURITY_HEADERS = [
       // Next.js needs 'unsafe-inline' for its inline hydration script
       // and 'unsafe-eval' in dev + some production optimisations.
       // Nonce-based CSP is a later project.
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // + Cloudflare Web Analytics, which the Cloudflare proxy injects
+      // into every page (beacon script + its reporting endpoint).
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com",
       // Tailwind + inline style attributes on lots of components.
       "style-src 'self' 'unsafe-inline'",
       // Supabase public-bucket avatars, contact avatars (arbitrary
@@ -74,7 +76,7 @@ const SECURITY_HEADERS = [
       "font-src 'self' data:",
       // Supabase REST + realtime (WSS). All Meta API calls happen
       // server-side, so graph.facebook.com does not belong here.
-      `connect-src 'self' ${SUPABASE_HTTP} ${SUPABASE_WS}`,
+      `connect-src 'self' ${SUPABASE_HTTP} ${SUPABASE_WS} https://cloudflareinsights.com`,
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
