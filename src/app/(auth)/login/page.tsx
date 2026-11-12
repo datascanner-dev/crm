@@ -90,6 +90,7 @@ function LoginPageInner() {
 
   return (
     <AuthShell
+      glow
       title={inviteToken ? t("titleAccept") : t("titleWelcome")}
       description={inviteToken ? t("descAccept") : t("descWelcome")}
       footer={
