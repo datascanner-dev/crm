@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
     fromCalls: [] as string[],
     updateCalls: [] as { table: string; filters: [string, string, unknown][] }[],
     upsertCalls: [] as { table: string; payload: unknown }[],
+    selectCalls: [] as { table: string; columns: unknown }[],
     logInserts: [] as Record<string, unknown>[],
     logUpdates: [] as Record<string, unknown>[],
     // automation_pending_executions rows, mutated in place by updates.
@@ -131,7 +132,7 @@ vi.mock("./admin-client", () => {
       single: false,
     };
     const b: Record<string, unknown> = {
-      select: () => b,
+      select: (columns?: unknown) => (state.selectCalls.push({ table, columns }), b),
       insert: (p: unknown) => ((ops.type = "insert"), (ops.payload = p), b),
       update: (p: unknown) => ((ops.type = "update"), (ops.payload = p), b),
       delete: () => ((ops.type = "delete"), b),
@@ -193,6 +194,7 @@ beforeEach(() => {
   h.state.fromCalls = [];
   h.state.updateCalls = [];
   h.state.upsertCalls = [];
+  h.state.selectCalls = [];
   h.state.logInserts = [];
   h.state.logUpdates = [];
   h.state.pending = [];
@@ -453,6 +455,43 @@ function updateStep() {
     step_config: { field: "company", value: "pwned-by-automation" },
   };
 }
+
+function conditionStep(operand: string) {
+  return {
+    id: "s1",
+    automation_id: "a1",
+    step_type: "condition",
+    position: 0,
+    parent_step_id: null,
+    step_config: { subject: "contact_field", operand, value: "x" },
+  };
+}
+
+describe("condition contact_field — select allowlist", () => {
+  async function run(operand: string) {
+    h.state.owned = { id: "c1" };
+    h.state.automations = [automationWithUpdateStep()];
+    h.state.steps = [conditionStep(operand)];
+    await runAutomationsForTrigger({
+      accountId: ACCOUNT,
+      triggerType: "new_message_received",
+      contactId: "c1",
+      context: {},
+    });
+    return h.state.selectCalls.filter((c) => c.table === "contacts").map((c) => c.columns);
+  }
+
+  it("reads an allowed plain column", async () => {
+    expect(await run("company")).toContain("company");
+  });
+
+  it.each(["id,accounts(*)", "custom_values:contact_custom_values(*)", "account_id", "name::text"])(
+    "never passes %s into the service-role select",
+    async (operand) => {
+      expect(await run(operand)).not.toContain(operand);
+    },
+  );
+});
 
 function customStep(field: string, value: string) {
   return {

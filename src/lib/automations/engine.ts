@@ -1123,6 +1123,8 @@ export function triggerMatches(automation: Automation, ctx: AutomationContext | 
   return true
 }
 
+const CONDITION_CONTACT_FIELDS = new Set(['name', 'email', 'phone', 'company'])
+
 async function evaluateCondition(cfg: ConditionStepConfig, args: ExecuteArgs): Promise<boolean> {
   const db = supabaseAdmin()
   switch (cfg.subject) {
@@ -1140,6 +1142,11 @@ async function evaluateCondition(cfg: ConditionStepConfig, args: ExecuteArgs): P
     }
     case 'contact_field': {
       if (!args.contactId || !cfg.operand || !(cfg.value ?? '').trim()) return false
+      // `operand` is free text from the builder and goes into a PostgREST
+      // select on the service-role client: only plain contact columns may
+      // reach it, never select syntax (embeds, casts, JSON paths). Same
+      // allowlist as the flows engine.
+      if (!CONDITION_CONTACT_FIELDS.has(cfg.operand)) return false
       // Scope to the account so the condition can't be turned into a
       // cross-tenant read oracle via the service-role client.
       const { data } = await db
