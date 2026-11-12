@@ -42,7 +42,9 @@ function LoginPageInner() {
       ? t("linkExpired")
       : linkError === "link_invalid"
         ? t("linkInvalid")
-        : null;
+        : searchParams.get("reason") === "idle"
+          ? t("idleLogout")
+          : null;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

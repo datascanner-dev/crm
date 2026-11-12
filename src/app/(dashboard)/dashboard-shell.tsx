@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { AccountAccessAlert } from "@/components/layout/account-access-alert";
 import { PresenceHeartbeat } from "@/components/presence/presence-heartbeat";
+import { IdleLogout } from "@/components/auth/idle-logout";
 import { BrowserNotificationsListener } from "@/components/notifications/browser-notifications-listener";
 
 // Auth-gated dashboard shell. Extracted from the layout so the layout
@@ -48,6 +49,8 @@ function DashboardShellInner({ children }: { children: React.ReactNode }) {
       {/* Reports this tab's online/away presence once we know a user is
           signed in. Headless — renders nothing. */}
       <PresenceHeartbeat />
+      {/* Encerra a sessão após 30 min sem uso em nenhuma aba. Headless. */}
+      <IdleLogout />
       {/* Desktop alerts for new customer messages (opt-in via Settings →
           Your profile). Headless — renders nothing. */}
       <BrowserNotificationsListener />
