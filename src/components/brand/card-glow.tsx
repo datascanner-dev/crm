@@ -5,6 +5,8 @@
 // nele. Tudo decorativo (aria-hidden, sem cliques) e determinístico: o
 // mesmo desenho no servidor e no navegador.
 
+import type { ReactNode } from "react";
+
 const COLS = 84;
 const ROWS = 26;
 const CHAR_W = 5.5; // px por coluna
@@ -158,7 +160,7 @@ export function CardGlowSpill() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 h-60 overflow-hidden rounded-t-[12px]"
+      className="pointer-events-none absolute inset-x-0 top-0 h-60 overflow-hidden rounded-t-[24px]"
     >
       {/* Luz quente descendo pelo cartão, larga como o leque. */}
       <div
@@ -181,3 +183,22 @@ export function CardGlowSpill() {
     </div>
   );
 }
+
+/**
+ * Moldura com o brilho em volta de um cartão qualquer (telas de
+ * recuperação de senha, que não usam o AuthShell). O cartão vai como
+ * filho, sem alteração.
+ */
+export function GlowFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative w-full max-w-md">
+      <CardGlow />
+      {children}
+      <CardGlowSpill />
+    </div>
+  );
+}
+
+/** Classes da página que recebe o GlowFrame: espaço no topo para o feixe. */
+export const GLOW_PAGE_CLASS =
+  "flex min-h-dvh items-center justify-center overflow-hidden bg-background px-4 pt-56 pb-8";

@@ -157,7 +157,7 @@ function SignupPageInner() {
       >
         <Button
           variant="outline"
-          className="h-12 w-full border-border text-base text-foreground hover:bg-muted"
+          className="h-14 w-full border-border text-base text-foreground hover:bg-muted"
           render={<Link href={loginHref} />}
           nativeButton={false}
         >
@@ -207,7 +207,7 @@ function SignupPageInner() {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
-            className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+            className="h-14 border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
           />
         </div>
 
@@ -227,7 +227,7 @@ function SignupPageInner() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+            className="h-14 border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
           />
         </div>
 
@@ -236,6 +236,7 @@ function SignupPageInner() {
             {t("passwordLabel")}
           </Label>
           <PasswordInput
+            className="h-14"
             id="password"
             autoComplete="new-password"
             enterKeyHint="next"
@@ -252,6 +253,7 @@ function SignupPageInner() {
             {t("confirmPasswordLabel")}
           </Label>
           <PasswordInput
+            className="h-14"
             id="confirmPassword"
             autoComplete="new-password"
             enterKeyHint="go"
@@ -266,7 +268,7 @@ function SignupPageInner() {
         <Button
           type="submit"
           disabled={loading}
-          className="mt-2 h-12 w-full bg-primary text-base text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="mt-2 h-14 w-full bg-primary text-base text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {loading ? t("creating") : t("submit")}
         </Button>

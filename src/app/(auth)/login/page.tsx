@@ -143,7 +143,7 @@ function LoginPageInner() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+            className="h-14 border-border bg-muted text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
           />
         </div>
 
@@ -152,6 +152,7 @@ function LoginPageInner() {
             {t("passwordLabel")}
           </Label>
           <PasswordInput
+            className="h-14"
             id="password"
             autoComplete="current-password"
             enterKeyHint="go"
@@ -172,7 +173,7 @@ function LoginPageInner() {
         <Button
           type="submit"
           disabled={loading}
-          className="h-12 w-full bg-primary text-base text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="h-14 w-full bg-primary text-base text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {loading ? t("signingIn") : t("signIn")}
         </Button>

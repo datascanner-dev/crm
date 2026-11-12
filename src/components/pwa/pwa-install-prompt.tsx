@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { EllipsisVertical, Share, SquarePlus, X } from "lucide-react";
 import { BrandMark } from "@/components/brand/brand-mark";
@@ -149,15 +149,48 @@ export function PwaInstallPrompt() {
     else accept();
   }, [deferred, dismiss, accept]);
 
-  if (mode === "hidden") return null;
+  const open = mode !== "hidden";
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Enquanto o convite está aberto: trava a rolagem da página, leva o
+  // foco para ele e fecha com Esc (mesmo efeito do X: "agora não").
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = "hidden";
+    dialogRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") dismiss();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+      previousFocus?.focus?.();
+    };
+  }, [open, dismiss]);
+
+  if (!open) return null;
 
   return (
+    <>
+    {/* Fundo escurecido cobrindo a tela inteira, acima de qualquer outra
+        camada, para o convite não se misturar com o conteúdo. Tocar fora
+        fecha como o X. */}
     <div
+      aria-hidden="true"
+      onClick={dismiss}
+      className="fixed inset-0 z-[70] animate-in fade-in duration-300 bg-black/60 backdrop-blur-[2px]"
+    />
+    <div
+      ref={dialogRef}
+      tabIndex={-1}
       role="dialog"
-      aria-modal="false"
+      aria-modal="true"
       aria-labelledby="pwa-install-title"
       aria-describedby="pwa-install-desc"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4 rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-2xl sm:right-6 sm:bottom-6 sm:left-auto sm:mx-0 sm:w-96"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[71] mx-auto outline-none max-w-md animate-in fade-in slide-in-from-bottom-full duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:slide-in-from-bottom-0 motion-reduce:duration-200 rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-2xl sm:right-6 sm:bottom-6 sm:left-auto sm:mx-0 sm:w-96"
     >
       <div className="flex items-start gap-3">
         <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#ff4602]">
@@ -234,5 +267,6 @@ export function PwaInstallPrompt() {
         </div>
       )}
     </div>
+    </>
   );
 }
